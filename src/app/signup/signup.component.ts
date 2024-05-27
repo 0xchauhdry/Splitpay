@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { User } from 'src/assets/models/User.model';
+import { User } from 'src/app/shared/models/user.model';
 import { UserService } from 'src/services/components/user.service';
 import { NotifierService } from 'src/services/services/notifier.service';
 

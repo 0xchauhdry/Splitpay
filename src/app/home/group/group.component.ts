@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ExpenseModel } from 'src/assets/models/Expense.model';
+import { ExpenseModel } from 'src/app/shared/models/expense.model';
 import { GroupService } from 'src/services/components/group.service';
 
 @Component({

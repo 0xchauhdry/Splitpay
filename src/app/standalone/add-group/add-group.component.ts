@@ -8,7 +8,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Group } from 'src/assets/models/Group.model';
+import { Group } from 'src/app/shared/models/group.model';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CommonService } from 'src/services/common/common.service';
 import { UserService } from 'src/services/components/user.service';
@@ -22,7 +22,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { FriendService } from 'src/services/components/friend.service';
 import { FriendsBroadcastService } from 'src/services/services/broadcast.service';
-import { FriendshipStates } from 'src/assets/enums/friendship-status.enum';
+import { FriendshipStates } from 'src/app/shared/enums/friendship-status.enum';
 import { NotifierService } from 'src/services/services/notifier.service';
 import { Subscription } from 'rxjs';
 

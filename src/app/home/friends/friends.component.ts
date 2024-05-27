@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddFriendComponent } from 'src/app/standalone/add-friend/add-friend.component';
 import { FriendsBroadcastService } from 'src/services/services/broadcast.service';
-import { FriendshipStates } from 'src/assets/enums/friendship-status.enum';
+import { FriendshipStates } from 'src/app/shared/enums/friendship-status.enum';
 import { Store } from '@ngrx/store';
 import { getUser } from 'src/services/auth/user.state';
-import { take } from 'rxjs';
 import { FriendService } from 'src/services/components/friend.service';
 
 @Component({

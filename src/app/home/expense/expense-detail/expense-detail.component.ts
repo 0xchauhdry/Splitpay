@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ExpenseModel } from 'src/assets/models/Expense.model';
+import { ExpenseModel } from 'src/app/shared/models/expense.model';
 
 @Component({
   selector: 'app-expense-detail',

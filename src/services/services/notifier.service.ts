@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { MessageService } from 'primeng/api';
-import { NotificationType, enumToString } from "src/assets/enums/notification-type.enum";
+import { NotificationType, enumToString } from "src/app/shared/enums/notification-type.enum";
 
 @Injectable({
   providedIn: "root",

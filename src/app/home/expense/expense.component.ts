@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ExpenseModel } from 'src/assets/models/Expense.model';
 import { ExpenseDetailComponent } from './expense-detail/expense-detail.component';
+import { ExpenseModel } from 'src/app/shared/models/expense.model';
 
 @Component({
   selector: 'app-expense',

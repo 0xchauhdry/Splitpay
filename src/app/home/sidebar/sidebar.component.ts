@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddGroupComponent } from 'src/app/standalone/add-group/add-group.component';
-import { FriendshipStates } from 'src/assets/enums/friendship-status.enum';
+import { FriendshipStates } from 'src/app/shared/enums/friendship-status.enum';
 import { GroupService } from 'src/services/components/group.service';
 import { FriendsBroadcastService } from 'src/services/services/broadcast.service';
 

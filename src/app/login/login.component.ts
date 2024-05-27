@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
-import { User } from 'src/assets/models/User.model';
+import { User } from 'src/app/shared/models/user.model';
 import { UserService } from 'src/services/components/user.service';
-import { LogIn } from 'src/assets/models/LogIn.model';
+import { LogIn } from 'src/app/shared/models/logIn.model';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NotifierService } from 'src/services/services/notifier.service';

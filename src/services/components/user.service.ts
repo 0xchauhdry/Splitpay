@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'src/services/api/api.service';
-import { LogIn } from '../../assets/models/LogIn.model';
-import { User } from '../../assets/models/User.model';
+import { LogIn } from '../../app/shared/models/logIn.model';
+import { User } from '../../app/shared/models/user.model';
 import { Store } from '@ngrx/store';
 import { getUser } from '../auth/user.state';
 import { switchMap } from 'rxjs';

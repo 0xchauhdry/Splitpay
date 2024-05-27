@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { clearUser, setUser } from './user.state';
-import { User } from 'src/assets/models/User.model';
+import { User } from 'src/app/shared/models/user.model';
 import { Observable, map, tap } from 'rxjs';
 import { ApiService } from '../api/api.service';
 import { Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {  
+export class AuthService {
   private readonly USER_STORAGE_KEY = 'user';
   private csrfToken: string;
   constructor(private store: Store,

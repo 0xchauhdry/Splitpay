@@ -1,5 +1,5 @@
 import { createAction, createReducer, on } from '@ngrx/store';
-import { User } from 'src/assets/models/User.model';
+import { User } from 'src/app/shared/models/user.model';
 
 export interface UserState {
   user: User | null;

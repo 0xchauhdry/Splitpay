@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ApiService } from '../api/api.service';
 import { getUser } from '../auth/user.state';
-import { Group } from 'src/assets/models/Group.model';
+import { Group } from 'src/app/shared/models/group.model';
 
 @Injectable({
   providedIn: 'root',
