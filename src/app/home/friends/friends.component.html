@@ -1,0 +1,147 @@
+<div style="position: relative">
+  <div class="top-bar">
+    <p-button
+      icon="fa-solid fa-user-plus"
+      [rounded]="true"
+      [raised]="true"
+      [outlined]="true"
+      pTooltip="Add friend"
+      tooltipPosition="left"
+      (click)="addFriend()"
+    ></p-button>
+  </div>
+
+  <div>
+    <p-tabView>
+      <p-tabPanel header="Friends">
+        <ul
+          class="list-group list-group-flush"
+          *ngIf="friends.length > 0; else no_friends"
+        >
+          <li class="list-group-item" *ngFor="let friend of friends">
+            <div class="row">
+              <div
+                class="col-1 d-flex justify-content-center align-items-center"
+              >
+                <p-avatar
+                  label="{{ friend.FirstName.slice(0, 1) }}"
+                  styleClass="mr-2"
+                  size="large"
+                  shape="circle"
+                ></p-avatar>
+              </div>
+              <div class="col">
+                <p class="mb-1 fs-4">
+                  {{ friend.FirstName + " " + friend.LastName }}
+                </p>
+                <p class="mb-0">{{ friend.UserName }}</p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </p-tabPanel>
+      <p-tabPanel header="Requests">
+        <ul
+          class="list-group list-group-flush"
+          *ngIf="requests.length > 0; else no_requests"
+        >
+          <li class="list-group-item" *ngFor="let user of requests">
+            <div class="row">
+              <div
+                class="col-1 d-flex justify-content-center align-items-center"
+              >
+                <p-avatar
+                  label="{{ user.FirstName.slice(0, 1) }}"
+                  styleClass="mr-2"
+                  size="large"
+                  shape="circle"
+                ></p-avatar>
+              </div>
+              <div class="col">
+                <p class="mb-1 fs-4">
+                  {{ user.FirstName + " " + user.LastName }}
+                </p>
+                <p class="mb-0">{{ user.UserName }}</p>
+              </div>
+              <div
+                class="col-2 d-flex justify-content-evenly align-items-center"
+              >
+                <p-button
+                  icon="fa-solid fa-check"
+                  [rounded]="true"
+                  [raised]="true"
+                  [outlined]="true"
+                  severity="success"
+                  pTooltip="Accept"
+                  tooltipPosition="top"
+                  (click)="acceptRequest(user)"
+                ></p-button>
+                <p-button
+                  icon="fa-solid fa-close"
+                  [rounded]="true"
+                  [raised]="true"
+                  [outlined]="true"
+                  severity="danger"
+                  pTooltip="Reject"
+                  tooltipPosition="top"
+                  (click)="rejectRequest(user)"
+                ></p-button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </p-tabPanel>
+      <p-tabPanel header="Requested">
+        <ul
+          class="list-group list-group-flush"
+          *ngIf="requested.length > 0; else no_pending_requests"
+        >
+          <li class="list-group-item" *ngFor="let user of requested">
+            <div class="row">
+              <div
+                class="col-1 d-flex justify-content-center align-items-center"
+              >
+                <p-avatar
+                  label="{{ user.FirstName.slice(0, 1) }}"
+                  styleClass="mr-2"
+                  size="large"
+                  shape="circle"
+                ></p-avatar>
+              </div>
+              <div class="col">
+                <p class="mb-1 fs-4">
+                  {{ user.FirstName + " " + user.LastName }}
+                </p>
+                <p class="mb-0">{{ user.UserName }}</p>
+              </div>
+              <div
+                class="col-1 d-flex justify-content-evenly align-items-center"
+              >
+                <p-button
+                  icon="fa-solid fa-close"
+                  [rounded]="true"
+                  [raised]="true"
+                  [outlined]="true"
+                  severity="danger"
+                  pTooltip="Cancel"
+                  tooltipPosition="top"
+                  (click)="cancelRequest(user)"
+                ></p-button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>
+
+<ng-template #no_friends>
+  <p>No friends to show</p>
+</ng-template>
+<ng-template #no_requests>
+  <p>No friend requests to show</p>
+</ng-template>
+<ng-template #no_pending_requests>
+  <p>No pending friend requests</p>
+</ng-template>

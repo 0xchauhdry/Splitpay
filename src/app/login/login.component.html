@@ -1,0 +1,66 @@
+<!-- Section: Design Block -->
+<section>
+  <!-- Jumbotron -->
+  <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%); height: 82vh;">
+    <div class="container">
+      <div class="row gx-lg-5 align-items-center my-auto">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <h1 class="my-5 display-3 fw-bold ls-tight">
+            The Splitwise <br />
+            <span class="text-primary">you deserve is here</span>
+          </h1>
+          <p style="color: hsl(217, 10%, 50.8%)">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Eveniet, itaque accusantium odio, soluta, corrupti aliquam
+            quibusdam tempora at cupiditate quis eum maiores libero
+            veritatis? Dicta facilis sint aliquid ipsum atque?
+          </p>
+        </div>
+
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <div class="card">
+            <div class="card-body py-5 px-md-5">
+              <form [formGroup]="logInForm" autocomplete="off" (ngSubmit)="LogIn()">
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="email">Username or Email</label>
+                  <input type="text" id="email" formControlName="usernameOrEmail" class="form-control"
+                  [class.is-invalid]="showErrors('usernameOrEmail') || isUsernameError"
+                   />
+                  <label *ngIf="showErrors('usernameOrEmail') || isUsernameError"
+                   class="text-danger" >
+                   Error: Please enter a valid username or email
+                  </label>
+                </div>
+
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="Password">Password</label>
+                  <input type="password" id="Password" formControlName="password" class="form-control"
+                  [class.is-invalid]="showErrors('password') || isPasswordError"
+                   />
+                  <label *ngIf="showErrors('password')"
+                   class="text-danger" >
+                   Error: Password is required
+                  </label>
+                  <label *ngIf="isPasswordError"
+                   class="text-danger" >
+                   Error: Password is invalid
+                  </label>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                  <button type="submit"
+                   class="btn btn-primary btn-block btn-lg mb-4">
+                    Log in
+                  </button>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Jumbotron -->
+</section>
+<!-- Section: Design Block -->

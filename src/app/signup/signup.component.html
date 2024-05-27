@@ -1,0 +1,168 @@
+<section class="">
+  <div
+    class="px-4 py-5 px-md-5 text-center text-lg-start"
+    style="background-color: hsl(0, 0%, 96%); height: 82vh"
+  >
+    <div class="container">
+      <div class="row gx-lg-5 align-items-center">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <h1 class="my-5 display-3 fw-bold ls-tight">
+            The Splitwise <br />
+            <span class="text-primary">you deserve is here</span>
+          </h1>
+          <p style="color: hsl(217, 10%, 50.8%)">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet,
+            itaque accusantium odio, soluta, corrupti aliquam quibusdam tempora
+            at cupiditate quis eum maiores libero veritatis? Dicta facilis sint
+            aliquid ipsum atque?
+          </p>
+        </div>
+
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <div class="card">
+            <div class="card-body py-5 px-md-5">
+              <form
+                [formGroup]="signUpForm"
+                autocomplete="off"
+                (ngSubmit)="SignUp()"
+              >
+                <div class="row">
+                  <div class="col-md-6 mb-4">
+                    <div class="form-outline">
+                      <label class="form-label" for="firstname"
+                        >First name</label
+                      >
+                      <input
+                        type="text"
+                        id="firstname"
+                        formControlName="firstname"
+                        class="form-control"
+                        [class.is-invalid]="showErrors('firstname')"
+                      />
+                      <label
+                        *ngIf="showErrors('firstname')"
+                        class="text-danger"
+                      >
+                        Error: Firstname is required
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-4">
+                    <div class="form-outline">
+                      <label class="form-label" for="lastname">Last name</label>
+                      <input
+                        type="text"
+                        id="lastname"
+                        formControlName="lastname"
+                        class="form-control"
+                        [class.is-invalid]="showErrors('lastname')"
+                      />
+                      <label *ngIf="showErrors('lastname')" class="text-danger">
+                        Error: Lastname is required
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="email">Email address</label>
+                  <input
+                    type="email"
+                    id="email"
+                    formControlName="email"
+                    class="form-control"
+                    [class.is-invalid]="showErrors('email')"
+                  />
+                  <label *ngIf="showErrors('email')" class="text-danger">
+                    Error: Please enter valid email
+                  </label>
+                </div>
+
+                <!-- Username input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="username">Username</label>
+                  <input
+                    type="email"
+                    id="username"
+                    formControlName="username"
+                    class="form-control"
+                    [class.is-invalid]="showErrors('username')"
+                  />
+                  <label *ngIf="showErrors('username')" class="text-danger">
+                    Error: Username must be between 6-15 characters.
+                  </label>
+                </div>
+
+                <!-- Password input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="password">Password</label>
+                  <input
+                    type="password"
+                    id="password"
+                    formControlName="password"
+                    class="form-control"
+                    [class.is-invalid]="showErrors('password')"
+                  />
+                  <label *ngIf="showErrors('password')" class="text-danger">
+                    Error: Password must be more than 6 characters.
+                  </label>
+                </div>
+
+                <!-- Password input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="confirmPassword"
+                    >Confirm Password</label
+                  >
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    formControlName="confirmPassword"
+                    class="form-control"
+                    [class.is-invalid]="showErrors('confirmPassword')"
+                  />
+                  <label
+                    *ngIf="showErrors('confirmPassword')"
+                    class="text-danger"
+                  >
+                    Error: Password is required
+                    <ng-container
+                      *ngIf="signUpForm.hasError('passwordMismatch')"
+                    >
+                      and does not match.
+                    </ng-container>
+                  </label>
+                </div>
+
+                <!-- Checkbox -->
+                <div class="form-check d-flex justify-content-start mb-4">
+                  <input
+                    class="form-check-input me-2"
+                    type="checkbox"
+                    value=""
+                    id="subscribe"
+                    checked
+                  />
+                  <label class="form-check-label" for="subscribe">
+                    Subscribe to our newsletter
+                  </label>
+                </div>
+
+                <!-- Submit button -->
+                <div class="d-flex justify-content-center">
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-block btn-lg mb-4"
+                    [disabled]="signUpForm.invalid"
+                  >
+                    Sign up
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

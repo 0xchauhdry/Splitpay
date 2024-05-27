@@ -1,0 +1,17 @@
+<mat-dialog-content>
+    <div class="card">
+        <div class="card-header">
+          <h2 mat-dialog-title>{{expense.title}}</h2>
+          <p>Added by <span class="fw-bold text-primary">{{expense.detail.createdBy}}</span> on <span  class="fw-bold text-primary">{{ expense.date | date:'dd MMM' }}</span></p>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+      </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button class="btn btn-primary" mat-button mat-dialog-close="close">Close</button>
+</mat-dialog-actions>
+
+

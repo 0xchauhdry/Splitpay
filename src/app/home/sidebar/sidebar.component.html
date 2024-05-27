@@ -1,0 +1,91 @@
+<div class="flex-shrink-0 p-3 bg-white ml-4">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <a href="dashboard" class="link-dark rounded text-decoration-none"
+        >Dashboard</a
+      >
+    </li>
+    <li class="list-group-item">
+      <a href="#" class="link-dark rounded text-decoration-none"
+        >Recent Activity</a
+      >
+    </li>
+  </ul>
+
+  <!-- Group & Friends -->
+  <div class="accordion" id="accordionPanelsStayOpenExample">
+    <!-- Group -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#groups"
+          aria-expanded="true"
+          aria-controls="panelsStayOpen-collapseOne"
+        >
+          Groups
+        </button>
+      </h2>
+      <div id="groups" class="accordion-collapse collapse show">
+        <div class="accordion-body">
+          <div
+            (click)="addGroup()"
+            class="link-success rounded text-decoration-none"
+            role="button"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            data-bs-title="Add Friend"
+          >
+            <i class="fa-solid fa-plus"></i> New Group
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let group of groups">
+              <a
+                routerLink="group"
+                [queryParams]="{ groupId: group.GroupId }"
+                class="link-dark rounded text-decoration-none"
+                >{{ group.Name }}</a
+              >
+              <span class="text-sm text-right"> 100 </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Friends -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#friends"
+          aria-expanded="false"
+          aria-controls="panelsStayOpen-collapseTwo"
+          [routerLink]="['friend']"
+        >
+          Friends
+        </button>
+      </h2>
+      <div id="friends" class="accordion-collapse collapse">
+        <div class="accordion-body">
+          <ul
+            class="list-group list-group-flush"
+            *ngIf="friends?.length > 0; else no_friends"
+          >
+            <li class="list-group-item" *ngFor="let friend of friends">
+              <i class="fa-solid fa-user"></i>
+              {{ friend.FirstName + "" + friend.LastName }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #no_friends>
+  <p class="mb-0">No friends to show</p>
+</ng-template>

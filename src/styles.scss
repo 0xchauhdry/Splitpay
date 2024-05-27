@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+.snackbar-error-class {
+  background-color: #d32f2f;
+  color: #fff;
+}
+
+.snackbar-class {
+  background: #dd413c;
+  color: white;
+}
+
+.snackbar-success-class {
+  background: #5eb348;
+  color: white;
+}

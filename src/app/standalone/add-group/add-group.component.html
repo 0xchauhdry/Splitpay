@@ -1,0 +1,96 @@
+<mat-dialog-content>
+  <div class="d-flex justify-content-between">
+    <h4>Add New Group</h4>
+    <button
+      class="btn btn-outline-none icon-btn"
+      (click)="dialogRef.close()"
+      aria-label="Close"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <form
+    class="mt-4"
+    [formGroup]="addGroupForm"
+    autocomplete="off"
+    (ngSubmit)="AddGroup()"
+  >
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-6 col-lg-8 mb-3">
+        <label for="nameInput">Name</label>
+        <input
+          type="text"
+          pInputText
+          id="nameInput"
+          formControlName="Name"
+          [class.is-invalid]="
+            addGroupForm.get('Name').touched && addGroupForm.get('Name').invalid
+          "
+        />
+      </div>
+      <div
+        class="col-12 col-sm-12 col-md-6 col-lg-4 mb-3 d-flex align-items-end"
+      >
+        <p-dropdown
+          formControlName="Currency"
+          [options]="currencies"
+          optionLabel="currency"
+          placeholder="Select a Currency"
+          [showClear]="false"
+        >
+          <ng-template pTemplate="selectedItem">{{
+            addGroupForm.get("Currency")?.value.Code
+          }}</ng-template>
+          <ng-template let-currency pTemplate="item">{{
+            currency.Code
+          }}</ng-template></p-dropdown
+        >
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label>Description</label>
+      <input type="text" pInputText formControlName="Description" />
+    </div>
+
+    <mat-form-field appearance="fill" style="width: 100%">
+      <mat-label>Select Users:</mat-label>
+      <mat-select
+        formControlName="Users"
+        id="userDropdown"
+        name="userDropdown"
+        multiple
+      >
+        <mat-option *ngFor="let user of users" [value]="user.UserId">
+          {{ user.FirstName + " " + user.LastName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- <div class="form-group mb-3">
+      <label>Select Users:</label>
+      <select
+        class="form-control"
+        id="userDropdown"
+        formControlName="Users"
+        name="userDropdown"
+        [class.is-invalid]="
+          addGroupForm.get('Users').touched && addGroupForm.get('Users').invalid
+        "
+      >
+        <option *ngFor="let user of users" [value]="user.UserId">
+          {{ user.FirstName + " " + user.LastName }}
+        </option>
+      </select>
+    </div> -->
+
+    <div class="d-flex justify-content-end">
+      <button
+        type="submit"
+        class="btn btn-primary text-center mt-5"
+        [disabled]="addGroupForm.invalid"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</mat-dialog-content>

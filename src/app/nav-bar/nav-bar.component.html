@@ -1,0 +1,36 @@
+<nav class="navbar bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+        <text x="50%" y="50%" text-anchor="middle" fill="#808080" font-size="50px" font-family="Verdana" dy=".3em">PS</text>
+      </svg>
+      Payment System
+    </a>
+    <div class="row">
+      <div class="col" *ngIf="!isLoggedIn">
+        <a class="btn btn-outline-primary btn-lg" routerLink="/login">Login</a>
+      </div>
+      <div class="col" *ngIf="!isLoggedIn">
+        <a class="btn btn-success btn-lg" routerLink="/signup">Signup</a>
+      </div>
+      <div class="col" *ngIf="isLoggedIn">
+        <!-- <i class="fa-solid fa-bell"></i> -->
+        <notification-center-component
+          [subscriberId]="subscriberId"
+          [applicationIdentifier]="applicationIdentifier"
+          [sessionLoaded]="sessionLoaded"
+          [colorScheme]="'light'"
+        ></notification-center-component>
+      </div>
+      <div class="col" *ngIf="isLoggedIn">
+        <button class="btn btn-outline-danger btn-lg" (click)="LogOut()">LogOut</button>
+      </div>
+      <!-- <div *ngIf="isLoggedIn" class="col d-flex align-items-center">
+        <span>Sohaiba</span>
+        <div class="mx-3 w-35 circle-container">
+          <img src="./../assets/images/sohaiba.png" alt="profile pic" class="circle-image">
+        </div>
+      </div> -->
+    </div>
+  </div>
+</nav>

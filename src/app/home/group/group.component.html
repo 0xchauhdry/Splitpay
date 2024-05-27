@@ -1,0 +1,17 @@
+<nav class="navbar p-2 mb-2 bg-light bg-gradient text-white border" style="width: 100%;">
+  <div class="container-fluid">
+    <div class="navbar-brand">
+      <h2><i class="fa-solid fa-user-group"></i> {{ groupInfo.Name }}</h2>
+    </div>
+    <div class="float-right">
+      <button type="button" class="btn btn-success m-1">Add Expense</button>
+      <button type="button" class="btn btn-primary m-1">Settle Up</button>
+    </div>
+  </div>
+</nav>
+<!-- Expense Detials -->
+<div class="container-fluid mt-3">
+  <div *ngFor="let expense of expenses">
+      <app-expense [expense]="expense"></app-expense>
+  </div>
+</div>
