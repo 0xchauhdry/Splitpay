@@ -3,3 +3,5 @@
     <router-outlet></router-outlet>
 </div>
 <p-toast></p-toast>
+<app-loader *ngIf="loaderService.isLoading | async"></app-loader>
+

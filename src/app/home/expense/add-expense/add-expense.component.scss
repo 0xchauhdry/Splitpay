@@ -1,0 +1,12 @@
+::ng-deep p-button {
+  button {
+    border-radius: 6px !important;
+  }
+  .p-button-rounded {
+    border-radius: 50% !important;
+  }
+}
+
+::ng-deep .p-inputnumber {
+  width: 100%;
+}

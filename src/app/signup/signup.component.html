@@ -1,7 +1,7 @@
 <section class="">
   <div
     class="px-4 py-5 px-md-5 text-center text-lg-start"
-    style="background-color: hsl(0, 0%, 96%); height: 82vh"
+    style="background-color: hsl(0, 0%, 96%); height: 90vh"
   >
     <div class="container">
       <div class="row gx-lg-5 align-items-center">
@@ -43,7 +43,7 @@
                         *ngIf="showErrors('firstname')"
                         class="text-danger"
                       >
-                        Error: Firstname is required
+                        Firstname is required
                       </label>
                     </div>
                   </div>
@@ -58,7 +58,7 @@
                         [class.is-invalid]="showErrors('lastname')"
                       />
                       <label *ngIf="showErrors('lastname')" class="text-danger">
-                        Error: Lastname is required
+                        Lastname is required
                       </label>
                     </div>
                   </div>
@@ -72,11 +72,18 @@
                     id="email"
                     formControlName="email"
                     class="form-control"
-                    [class.is-invalid]="showErrors('email')"
+                    [class.is-invalid]="showErrors('email') || isEmailError"
                   />
-                  <label *ngIf="showErrors('email')" class="text-danger">
-                    Error: Please enter valid email
-                  </label>
+                  @if (showErrors('email')) {
+                    <label class="text-danger">
+                      {{'Valid email format: abc@abc.com'}}
+                    </label>
+                  }
+                  @else if (isEmailError){
+                    <label class="text-danger">
+                      Email Already exists.
+                    </label>
+                  }
                 </div>
 
                 <!-- Username input -->
@@ -87,11 +94,18 @@
                     id="username"
                     formControlName="username"
                     class="form-control"
-                    [class.is-invalid]="showErrors('username')"
+                    [class.is-invalid]="showErrors('username') || isUsernameError"
                   />
-                  <label *ngIf="showErrors('username')" class="text-danger">
-                    Error: Username must be between 6-15 characters.
-                  </label>
+                  @if (showErrors('username')) {
+                    <label class="text-danger">
+                      Username must be between 6-15 characters.
+                    </label>
+                  }
+                  @else if (isEmailError){
+                    <label class="text-danger">
+                      Username Already exists.
+                    </label>
+                  }
                 </div>
 
                 <!-- Password input -->
@@ -105,7 +119,7 @@
                     [class.is-invalid]="showErrors('password')"
                   />
                   <label *ngIf="showErrors('password')" class="text-danger">
-                    Error: Password must be more than 6 characters.
+                    Password must be more than 6 characters.
                   </label>
                 </div>
 
@@ -125,7 +139,7 @@
                     *ngIf="showErrors('confirmPassword')"
                     class="text-danger"
                   >
-                    Error: Password is required
+                    Password is required
                     <ng-container
                       *ngIf="signUpForm.hasError('passwordMismatch')"
                     >

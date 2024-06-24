@@ -14,11 +14,11 @@ export class ApiService {
     return this.http.get<T>(`${environment.baseAPIURL}/${endpoint}`);
   }
 
-  post(endpoint: string, data: any) {
-    return this.http.post(`${environment.baseAPIURL}/${endpoint}`, data);
+  post<T>(endpoint: string, data: any): Observable<T> {
+    return this.http.post<T>(`${environment.baseAPIURL}/${endpoint}`, data);
   }
 
-  put(endpoint: string, data: any) {
-    return this.http.put(`${environment.baseAPIURL}/${endpoint}`, data);
+  put<T>(endpoint: string, data: any): Observable<T> {
+    return this.http.put<T>(`${environment.baseAPIURL}/${endpoint}`, data);
   }
 }

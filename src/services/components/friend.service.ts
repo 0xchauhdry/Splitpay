@@ -1,39 +1,38 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from "../api/api.service";
-import { UserState, getUser } from "../auth/user.state";
-import { Store } from "@ngrx/store";
-import { switchMap } from "rxjs";
+import { AuthService } from "../auth/auth.service";
+import { User } from "src/models/user.model";
+import { FriendshipStates } from "src/models/enums/friendship-status.enum";
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class FriendService {
-  constructor(private apiService: ApiService, private store: Store<UserState>) { }
-  friendBaseUrl: string = 'friend';
+  userId: number = 0;
+  constructor(private apiService: ApiService, private authService: AuthService) {
+    this.authService.user$.subscribe({
+      next: (user: User) => {
+        if(user){
+          this.userId = user.id;
+        }
+      }
+    });
+  }
 
   public GetFriends() {
-    return this.store.select(getUser).pipe(
-      switchMap((user: any) => {
-        return this.apiService.get(`${this.friendBaseUrl}/getAll/${user.user.UserId}`);
-      })
-    );
+    return this.apiService.get(`friend/getAll/${this.userId}`);
   }
 
   public AddFriend(email: string) {
-    return this.store.select(getUser).pipe(
-      switchMap((user: any) => {
-        return this.apiService.post(`${this.friendBaseUrl}/add`, { UserId: user.user.UserId, email: email });
-      })
-    );
+    return this.apiService.post(`friend/${this.userId}/add`, { email: email });
   }
 
-  public UpdateRequest(id: number, state: number) {
-    return this.apiService.put(`${this.friendBaseUrl}/update`, { friendshipId: id, state: state });
+  public AcceptRequest(friendshipId: number, userId: number) {
+    return this.apiService.put(`friend/${this.userId}/accept`, { friendshipId, userId });
   }
 
-  public CancelRequest(id: number, state: number) {
-    return this.apiService.put(`${this.friendBaseUrl}/cancel`, { friendshipId: id, state: state });
+  public CancelRequest(friendshipId: number, state: number) {
+    return this.apiService.put(`friend/cancel`, { friendshipId, state });
   }
-
 }

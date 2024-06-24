@@ -1,7 +1,8 @@
 <!-- Section: Design Block -->
 <section>
   <!-- Jumbotron -->
-  <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%); height: 82vh;">
+  <div class="px-4 py-5 px-md-5 text-center text-lg-start" 
+    style="background-color: hsl(0, 0%, 96%); height: 90vh;">
     <div class="container">
       <div class="row gx-lg-5 align-items-center my-auto">
         <div class="col-lg-6 mb-5 mb-lg-0">
@@ -28,7 +29,7 @@
                    />
                   <label *ngIf="showErrors('usernameOrEmail') || isUsernameError"
                    class="text-danger" >
-                   Error: Please enter a valid username or email
+                   Please enter a valid username or email
                   </label>
                 </div>
 
@@ -39,11 +40,11 @@
                    />
                   <label *ngIf="showErrors('password')"
                    class="text-danger" >
-                   Error: Password is required
+                   Password is required
                   </label>
                   <label *ngIf="isPasswordError"
                    class="text-danger" >
-                   Error: Password is invalid
+                   Password is invalid
                   </label>
                 </div>
 

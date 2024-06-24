@@ -1,36 +1,65 @@
-<nav class="navbar bg-body-tertiary">
+<nav class="navbar bg-body-tertiary fixed-top">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
       <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-        <text x="50%" y="50%" text-anchor="middle" fill="#808080" font-size="50px" font-family="Verdana" dy=".3em">PS</text>
+        <text x="50%" y="50%" text-anchor="middle" fill="#808080" font-size="30px" font-family="Verdana" dy=".3em">PS</text>
       </svg>
       Payment System
     </a>
     <div class="row">
-      <div class="col" *ngIf="!isLoggedIn">
-        <a class="btn btn-outline-primary btn-lg" routerLink="/login">Login</a>
-      </div>
-      <div class="col" *ngIf="!isLoggedIn">
-        <a class="btn btn-success btn-lg" routerLink="/signup">Signup</a>
-      </div>
-      <div class="col" *ngIf="isLoggedIn">
-        <!-- <i class="fa-solid fa-bell"></i> -->
-        <notification-center-component
-          [subscriberId]="subscriberId"
-          [applicationIdentifier]="applicationIdentifier"
-          [sessionLoaded]="sessionLoaded"
-          [colorScheme]="'light'"
-        ></notification-center-component>
-      </div>
-      <div class="col" *ngIf="isLoggedIn">
-        <button class="btn btn-outline-danger btn-lg" (click)="LogOut()">LogOut</button>
-      </div>
-      <!-- <div *ngIf="isLoggedIn" class="col d-flex align-items-center">
-        <span>Sohaiba</span>
-        <div class="mx-3 w-35 circle-container">
-          <img src="./../assets/images/sohaiba.png" alt="profile pic" class="circle-image">
+      @if(!isLoggedIn){
+        <div class="col">
+          <a class="btn btn-outline-primary" routerLink="/login">Login</a>
         </div>
-      </div> -->
+        <div class="col">
+          <a class="btn btn-success" routerLink="/signup">Signup</a>
+        </div>
+      }
+      @else {
+        <div class="d-flex align-items-center justify-content-between gap-3">
+          <div class="col">
+            <notification-center-component
+              [subscriberId]="subscriberId"
+              [applicationIdentifier]="applicationIdentifier"
+              [sessionLoaded]="sessionLoaded"
+              [colorScheme]="'light'"
+            ></notification-center-component>
+          </div>
+          <div class="col d-flex align-items-center">
+            <div class="me-3 w-35" (click)="op.toggle($event)">
+              @if (userImageUrl) {
+                <p-avatar 
+                  [image]="userImageUrl" 
+                  styleClass="mr-2 mb-1" 
+                  size="large" 
+                  shape="circle"
+                  [style]="{ 'cursor': 'pointer' }" 
+                />
+              }
+              @else {
+                <p-avatar
+                  icon = "pi pi-user"
+                  styleClass="mr-2 mb-1"
+                  size="large"
+                  shape="circle"
+                  [style]="{ 'cursor': 'pointer' }"
+                />
+              }
+            </div>
+            <p-overlayPanel #op>
+              <div class="profile-panel">
+                <h5 class="username" style="cursor: pointer;">
+                  {{user?.name?.first}}, {{user?.name?.last}}
+                </h5>
+                <a [routerLink]="['home/settings']" class="profile-link">User Profile</a>
+                <div class="logout" (click)="logout()">
+                  <i class="pi pi-sign-out"></i> &nbsp; Log Out
+                </div>
+              </div>
+            </p-overlayPanel>
+          </div>
+        </div>
+      }
     </div>
   </div>
 </nav>

@@ -1,53 +1,55 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-
-interface User {
-  name: string;
-  balance: number;
-}
-
-interface Group {
-  name: string;
-}
-
-interface Friend {
-  name: string;
-}
-
-interface Transaction {
-  description: string;
-  amount: number;
-}
+import { ChartModule } from 'primeng/chart';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  standalone: true,
+  imports:[
+    CommonModule,
+    ChartModule,
+    TableModule
+  ]
 })
-export class DashboardComponent implements OnInit {
-  user: User = { name: '', balance: 0 };
-  groups: Group[] = [];
-  friends: Friend[] = [];
-  transactions: Transaction[] = [];
+export class DashboardComponent implements OnInit {  
+  pieData: any;
+  barData: any;
+  transactions: any[];
 
-  ngOnInit() {
-    this.user = {
-      name: 'John Doe',
-      balance: 1000
+  constructor() {
+    this.pieData = {
+      labels: ['Group 1', 'Group 2', 'Group 3'],
+      datasets: [
+        {
+          data: [300, 500, 200],
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+          hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+        }
+      ]
     };
-    this.groups = [
-      { name: 'Group 1' },
-      { name: 'Group 2' },
-      { name: 'Group 3' }
-    ];
-    this.friends = [
-      { name: 'Friend 1' },
-      { name: 'Friend 2' },
-      { name: 'Friend 3' }
-    ];
+
+    this.barData = {
+      labels: ['January', 'February', 'March', 'April', 'May'],
+      datasets: [
+        {
+          label: 'Expenses',
+          backgroundColor: '#42A5F5',
+          borderColor: '#1E88E5',
+          data: [65, 59, 80, 81, 56]
+        }
+      ]
+    };
+
     this.transactions = [
-      { description: 'Rent', amount: -500 },
-      { description: 'Salary', amount: 2000 },
-      { description: 'Groceries', amount: -300 }
+      { date: '2024-06-01', description: 'Lunch', amount: 15, group: 'Friends' },
+      { date: '2024-06-02', description: 'Groceries', amount: 50, group: 'Family' },
+      // Add more transactions here
     ];
   }
+  
+
+  ngOnInit() {}
 }

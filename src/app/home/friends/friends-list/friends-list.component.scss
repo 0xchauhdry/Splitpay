@@ -1,0 +1,18 @@
+p-button-icon {
+    border-radius: 50%;
+}
+
+::ng-deep .p-tabview .p-tabview-panels{
+    padding: 0;
+}
+
+.top-bar{
+    position: absolute;
+    right: 0;
+    top: 10px;
+    z-index: 2;
+}
+
+::ng-deep a{
+    text-decoration: none;
+}

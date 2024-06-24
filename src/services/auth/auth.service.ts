@@ -1,52 +1,47 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { clearUser, setUser } from './user.state';
-import { User } from 'src/app/shared/models/user.model';
-import { Observable, map, tap } from 'rxjs';
-import { ApiService } from '../api/api.service';
+import { clearUser, getUser, setUser } from './user.state';
+import { User } from 'src/models/user.model';
+import { Observable, map } from 'rxjs';
 import { Router } from '@angular/router';
+import { NotifierService } from '../services/notifier.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthService {  
   private readonly USER_STORAGE_KEY = 'user';
-  private csrfToken: string;
+  private _csrfToken: string = '';
+  user$: Observable<User>;
+
+  get csrfToken(): any {
+    return this._csrfToken;
+  }
+
+  set csrfToken(newValue: any) {
+    this._csrfToken = newValue;
+  }
+
   constructor(private store: Store,
-    private apiService: ApiService,
-    private router: Router) {
-    this.loadUserFromLocalStorage()
+    private router: Router,
+    private notifier: NotifierService
+  ){
+      this.loadUserFromLocalStorage()
+      this.user$ = this.store.select(getUser);
   }
 
-  getCsrfToken(): Observable<{ csrfToken: string }> {
-    return this.apiService.get<{ csrfToken: string }>('/api/csrf-token').pipe(
-      tap(response => {
-        this.csrfToken = response.csrfToken;
-      })
-    );
-  }
-
-  loginUser(user: User, token: string = ''): void {
+  loginUser(user: User): void {
     localStorage.setItem(this.USER_STORAGE_KEY, JSON.stringify(user));
-    //this.store.dispatch(setToken(token));
     this.loadUserFromLocalStorage();
-    this.getCsrfToken();
   }
 
   logoutUser(): void {
     localStorage.removeItem(this.USER_STORAGE_KEY);
     this.store.dispatch(clearUser());
-    //this.store.dispatch(clearToken());
   }
 
   isLoggedIn(): Observable<boolean> {
-    return this.store.select((state: any) => state).pipe(
-      map(state => state.user?.user !== null)
-    );
-  }
-
-  getCsrfTokenValue(): string | null {
-    return this.csrfToken;
+    return this.store.select(getUser).pipe(map(user => user !== null));
   }
 
   private loadUserFromLocalStorage(): void {
@@ -56,7 +51,7 @@ export class AuthService {
         const user: User = JSON.parse(userJson);
         this.store.dispatch(setUser(user));
       } catch (error) {
-        console.error('Error parsing user JSON from localStorage', error);
+        this.notifier.error('Error parsing user JSON from localStorage', error);
         localStorage.removeItem(this.USER_STORAGE_KEY);
         this.router.navigate(['/login']);
       }

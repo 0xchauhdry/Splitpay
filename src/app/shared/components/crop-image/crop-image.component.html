@@ -1,0 +1,19 @@
+<div class="p-fluid" style="max-height: 40vh;">
+    <image-cropper
+      [imageChangedEvent]="imageChangedEvent"
+      [aspectRatio]="1"
+      format="png"
+      (imageCropped)="imageCropped($event)"
+      (loadImageFailed)="loadImageFailed()"
+      [style]=" { 'height': '60vh'}"
+    ></image-cropper>
+    <div class="mt-1">
+        <button pButton 
+            type="button"
+            label="Crop & Save"
+            icon="pi pi-check"
+            (click)="confirmCrop()">
+        </button>
+    </div>
+  </div>
+  

@@ -1,19 +1,82 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
 
-.snackbar-error-class {
-  background-color: #d32f2f;
-  color: #fff;
+html {
+    font-size: 16px;
 }
 
-.snackbar-class {
-  background: #dd413c;
-  color: white;
-}
+/* night mode */
+// body.night-mode {
+//   background-color: #121212;
+//   color: #ffffff;
+// }
 
-.snackbar-success-class {
-  background: #5eb348;
-  color: white;
-}
+// .night-mode button {
+//   background-color: #333333;
+//   color: #ffffff;
+//   border: 1px solid #444444;
+// }
+
+// .night-mode input, .night-mode textarea {
+//   background-color: #333333;
+//   color: #ffffff;
+//   border: 1px solid #444444;
+// }
+
+// .night-mode a {
+//   color: #bb86fc;
+// }
+
+// .night-mode header, .night-mode footer {
+//   background-color: #1f1f1f;
+// }
+
+// .night-mode .card {
+//   background-color: #2c2c2c;
+//   border: 1px solid #444444;
+// }
+
+// /* left nav css*/
+// .left-nav {
+//   position: fixed;
+//   left: 0;
+//   top: 0;
+//   width: 60px;
+//   height: 100%;
+//   background-color: #eaeaea; 
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   padding-top: 10vh;
+// }
+
+// .nav-item {
+//   color: #666; 
+//   text-decoration: none;
+//   padding: 18px;
+//   font-size: 24px;
+// }
+
+// .nav-item:hover {
+//   background-color: #d3d3d3;
+//   color: #333; 
+// }
+
+// .collapse-btn {
+//   background-color: #666; 
+//   color: #fff;
+//   border: none;
+//   width: 100%;
+//   padding: 15px 0;
+//   cursor: pointer;
+//   font-size: 24px;
+// }
+
+// .collapse-btn:focus {
+//   outline: none;
+// }
+
+/*nav bar css*/
+

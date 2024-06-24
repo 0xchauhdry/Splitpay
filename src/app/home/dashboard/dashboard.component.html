@@ -1,40 +1,49 @@
-<div class="container-fluid">
-  <nav class="navbar p-2 mb-2 bg-light bg-gradient text-white border" style="width: 100%;">
-    <div class="container-fluid">
-      <div class="navbar-brand">
-        
-        <h2> Dashboard</h2>
+  <div class="container mt-4">
+    <!-- Summary Cards -->
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+          <div class="card-header">Total Expenses</div>
+          <div class="card-body">
+            <h5 class="card-title">$1200</h5>
+          </div>
+        </div>
       </div>
-      <div class="float-right">
-        <button type="button" class="btn btn-success m-1">Add Expense</button>
-        <button type="button" class="btn btn-primary m-1">Settle Up</button>
+      <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+          <div class="card-header">Transactions</div>
+          <div class="card-body">
+            <h5 class="card-title">45</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-white bg-warning mb-3">
+          <div class="card-header">Balance</div>
+          <div class="card-body">
+            <h5 class="card-title">$300</h5>
+          </div>
+        </div>
       </div>
     </div>
-  </nav>
-  <div class="list-group">
-    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">List group item heading</h5>
-        <small>3 days ago</small>
+
+    <!-- Charts -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card mb-3">
+          <div class="card-header">Expenses by Group</div>
+          <div class="card-body">
+            <p-chart type="pie" [data]="pieData"></p-chart>
+          </div>
+        </div>
       </div>
-      <p class="mb-1">Some placeholder content in a paragraph.</p>
-      <small>And some small print.</small>
-    </a>
-    <a href="#" class="list-group-item list-group-item-action">
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">List group item heading</h5>
-        <small class="text-body-secondary">3 days ago</small>
+      <div class="col-md-6">
+        <div class="card mb-3">
+          <div class="card-header">Monthly Expenses with Friends</div>
+          <div class="card-body">
+            <p-chart type="bar" [data]="barData"></p-chart>
+          </div>
+        </div>
       </div>
-      <p class="mb-1">Some placeholder content in a paragraph.</p>
-      <small class="text-body-secondary">And some muted small print.</small>
-    </a>
-    <a href="#" class="list-group-item list-group-item-action">
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">List group item heading</h5>
-        <small class="text-body-secondary">3 days ago</small>
-      </div>
-      <p class="mb-1">Some placeholder content in a paragraph.</p>
-      <small class="text-body-secondary">And some muted small print.</small>
-    </a>
+    </div>
   </div>
-</div>

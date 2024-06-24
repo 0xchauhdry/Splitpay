@@ -1,17 +1,39 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { 
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
-import { User } from 'src/app/shared/models/user.model';
+import { User } from 'src/models/user.model';
 import { UserService } from 'src/services/components/user.service';
-import { LogIn } from 'src/app/shared/models/logIn.model';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { LogIn } from 'src/models/logIn.model';
+import { Router, RouterModule } from '@angular/router';
+import { Subscription, finalize } from 'rxjs';
 import { NotifierService } from 'src/services/services/notifier.service';
+import { ValidatorService } from 'src/services/common/validator.service';
+import { CommonModule } from '@angular/common';
+import { MessageService } from 'primeng/api';
+import { LoaderService } from 'src/services/services/loader.service';
+import { MixpanelService } from 'src/services/services/mixpanel.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  standalone: true,
+  imports:[
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule
+  ],
+  providers:[
+    MessageService
+  ]
 })
 export class LoginComponent implements OnInit, OnDestroy {
   logInForm: FormGroup = new FormGroup({});
@@ -23,9 +45,13 @@ export class LoginComponent implements OnInit, OnDestroy {
      private loginService: UserService,
      private authService: AuthService,
      private router: Router,
-     private notifierService: NotifierService){
-      this.subscription = new Subscription();
-     }
+     private notifierService: NotifierService,
+     private validator: ValidatorService,
+     private loader: LoaderService,
+     private mixpanel: MixpanelService
+  ){
+    this.subscription = new Subscription();
+  }
 
   ngOnInit(): void {
     this.logInForm = this.formBuilder.group({
@@ -36,7 +62,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.logInForm.get('usernameOrEmail').valueChanges.subscribe(value => {
       if (value.includes('@')){
         this.logInForm.get('usernameOrEmail')
-          .setValidators([Validators.required, Validators.email]);
+          .setValidators([Validators.required, this.validator.emailValidator()]);
       }
       else{
         this.logInForm.get('usernameOrEmail')
@@ -51,7 +77,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   LogIn(){
     if(this.logInForm.invalid){
-      this.notifierService.error('Form is invalid bitch')
+      this.notifierService.error('Form is invalid.')
       return;
     }
 
@@ -59,10 +85,18 @@ export class LoginComponent implements OnInit, OnDestroy {
     loginUser.usernameOrEmail = this.logInForm.get('usernameOrEmail').value;
     loginUser.password = this.logInForm.get('password').value;
 
+    this.loader.show()
     this.subscription.add(
-      this.loginService.logIn(loginUser).subscribe({
+      this.loginService.logIn(loginUser)
+      .pipe(
+        finalize(() => {
+          this.loader.hide();
+        })
+      )
+      .subscribe({
       next: (res: User) => {
         this.authService.loginUser(res);
+        this.mixpanel.log('Logged In')
         this.router.navigate(['home']);
       },
       error: (err) => {

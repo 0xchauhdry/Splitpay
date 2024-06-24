@@ -1,0 +1,31 @@
+
+<div class="container-fluid mt-1" style="overflow: auto;">
+    <p-dataView #dv [value]="expenses">
+      <ng-template pTemplate="list" let-expenses>
+        <div class="grid grid-nogutter">
+            @for (expense of expenses; track expense) {
+                <div class="col-12">
+                  <div
+                    class="flex flex-column sm:flex-row sm:align-items-center p-2 border-top">
+                    <div class="row">
+                      <div class="col-11">
+                        <app-expense [expense]="expense"></app-expense>
+                      </div>
+        
+                      <div class="col d-flex justify-content-center align-items-center">
+                        <i
+                          class="pi pi-pen-to-square cursor-pointer"
+                          style="font-size: 1.3rem"
+                          pTooltip="Edit Expense"
+                          tooltipPosition="top"
+                          (click)="editExpense(expense)"
+                        ></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            }
+        </div>
+      </ng-template>
+    </p-dataView>
+  </div>

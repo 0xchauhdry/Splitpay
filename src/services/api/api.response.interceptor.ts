@@ -1,46 +1,43 @@
-import { Injectable } from '@angular/core';
+import { inject } from '@angular/core';
 import {
+  HttpInterceptorFn,
   HttpRequest,
-  HttpHandler,
+  HttpHandlerFn,
   HttpEvent,
-  HttpInterceptor,
   HttpErrorResponse
 } from '@angular/common/http';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { NotifierService } from '../services/notifier.service';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class ApiResponseInterceptor implements HttpInterceptor {
-  constructor(private notifier: NotifierService) {}
+export const apiResponseInterceptor: HttpInterceptorFn = (
+  request: HttpRequest<any>,
+  next: HttpHandlerFn
+): Observable<HttpEvent<any>> => {
+  const notifier = inject(NotifierService);
 
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    return next.handle(request).pipe(
-      map((event: HttpEvent<any>) => event),
-
-      catchError((error: any) => {
-        if (error instanceof HttpErrorResponse){
-          if (error.status == 400) {
-            this.notifier.error(error.error.error);
-          }
-          else if (error.status === 401) {
-            this.notifier.error('Unauthorized access');
-          }
-          else if (error.status === 403) {
-            this.notifier.error('Error: 403 Forbidden');
-          } else {
-            this.notifier.error('An unexpected error occurred');
-          }
-        } 
-        else{
-          this.notifier.error(error.message);
-        }
-        return throwError(() => new Error(error.error.error));
-      })
-    );
-  }
-}
+  return next(request).pipe(
+    map((event: HttpEvent<any>) => event),
+    catchError((error: any) => {
+      if (error instanceof HttpErrorResponse) {
+        switch (error.status) {
+          case 400:
+            notifier.error(error.error.error);
+            break;
+          case 401:
+            notifier.error('You are not authorized to access this resource. Please log in and try again.');
+            break;
+          case 403:
+            notifier.error('Access to this resource is forbidden. Please contact the administrator if you believe this is an error.');
+            break;
+          case 429:
+            notifier.error('You are being rate limited. Please try again later.');
+            break;
+          default:
+            notifier.error('An unexpected error occurred. Please try again later.');
+            break;
+      }
+    }
+    return throwError(() => new Error(error.error.error));
+    })
+  );
+};

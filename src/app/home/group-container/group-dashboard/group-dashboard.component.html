@@ -1,0 +1,63 @@
+<!-- Main Content -->
+<div class="container mt-4">
+    <!-- Group Balance Cards -->
+    <!-- <div class="row">
+      <div class="col-md-4" *ngFor="let group of groups">
+        <div class="card mb-3" [ngClass]="{'text-white bg-success': group.balance >= 0, 'text-white bg-danger': group.balance < 0}">
+          <div class="card-header">{{group.name}}</div>
+          <div class="card-body">
+            <h5 class="card-title">${{group.balance}}</h5>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- Charts -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card mb-3">
+          <div class="card-header">Group Balances</div>
+          <div class="card-body">
+            <p-chart type="bar" [data]="groupBalanceData"></p-chart>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card mb-3">
+          <div class="card-header">Expense Trend in Group 1</div>
+          <div class="card-body">
+            <p-chart type="line" [data]="expenseTrendData"></p-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expense List -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card mb-3">
+          <div class="card-header">Recent Transactions</div>
+          <div class="card-body">
+            <p-table [value]="transactions">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Group</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-transaction>
+                <tr>
+                  <td>{{transaction.date}}</td>
+                  <td>{{transaction.description}}</td>
+                  <td>{{transaction.amount}}</td>
+                  <td>{{transaction.group}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

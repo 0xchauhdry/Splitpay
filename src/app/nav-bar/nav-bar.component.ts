@@ -1,48 +1,92 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store, select } from '@ngrx/store';
-import { Subscription, switchMap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/services/auth/auth.service';
-import { getUser } from 'src/services/auth/user.state';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { NotificationCenterModule } from '@novu/notification-center-angular';
+import { FormsModule } from '@angular/forms';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { User } from 'src/models/user.model';
+import { ImageService } from 'src/services/common/image.service';
+import { AvatarModule } from 'primeng/avatar';
+import { SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    NotificationCenterModule,
+    FormsModule,
+    OverlayPanelModule,
+    InputSwitchModule,
+    AvatarModule
+  ],
 })
-export class NavBarComponent implements OnInit {
-  private isLoggedInSubscription: Subscription;
+export class NavBarComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean = false;
   subscriberId: string = '';
   applicationIdentifier = environment.applicationIdentifier;
-  constructor(private authService: AuthService, private router: Router, private store: Store) {}
+  subscription: Subscription;
+  user: User;
+  userImageUrl: SafeUrl;
+  constructor(private authService: AuthService,
+     private router: Router,
+     private imageService: ImageService,
+     ) {
+    this.subscription = new Subscription();
+  }
 
   ngOnInit() {
-    this.isLoggedInSubscription = this.authService
+    this.subscription.add(this.authService
       .isLoggedIn()
       .subscribe((isLoggedIn) => {
         this.isLoggedIn = isLoggedIn;
-      });
-
-    this.store.pipe(select(getUser))
-      .subscribe((user: any) => {
-        this.subscriberId = user?.user?.UserId?.toString() ?? '';
       })
+    );
+
+    this.authService.user$
+    .subscribe({
+      next: (user: User) => {
+        if(user){
+          this.user = user;
+          this.subscriberId = this.user.id.toString() ?? '';
+        }
+      },
+    });
+    
+    this.subscription.add(
+      this.imageService.userImageUrl.subscribe({
+        next: (imageUrl: string) => {
+          this.userImageUrl = imageUrl;
+        },
+      })
+    );
   }
 
   sessionLoaded = (data: unknown) => {
     console.log('loaded', { data });
   };
 
-  LogOut() {
+  isDarkMode: boolean = false;
+
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    document.body.classList.toggle('dark-mode', this.isDarkMode);
+  }
+
+  logout() {
     this.authService.logoutUser();
     this.router.navigate(['login']);
   }
 
   ngOnDestroy() {
-    if (this.isLoggedInSubscription) {
-      this.isLoggedInSubscription.unsubscribe();
-    }
+    this.subscription.unsubscribe();
   }
 }

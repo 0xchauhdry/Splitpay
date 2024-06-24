@@ -1,0 +1,30 @@
+<form
+  class="mt-4"
+  [formGroup]="addFriendForm"
+  autocomplete="off"
+  (ngSubmit)="AddFriend()"
+>
+  <div class="row m-2">
+      <label class= "p-0" for="emailInput">Friend's Email</label>
+      <input
+        type="email"
+        pInputText
+        id="emailInput"
+        formControlName="email"
+        [class.is-invalid]="
+          addFriendForm.get('email').touched && addFriendForm.get('email').invalid
+        "
+      />
+  </div>
+
+  <div class="d-flex justify-content-end">
+    <button
+      type="submit"
+      class="btn btn-primary text-center mt-5"
+      [disabled]="addFriendForm.invalid"
+    >
+      Add Friend
+    </button>
+  </div>
+</form>
+  

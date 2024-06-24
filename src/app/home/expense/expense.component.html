@@ -1,20 +1,37 @@
-<div class="shadow p-3 mb-3 bg-body-tertiary rounded">
-    <div class="container-fluid" style="cursor: pointer;" (click)="OpenExpenseDetail()">
-        <div class="row">
-            <div class="col-1">
-                <h4>{{ expense.date | date:'dd MMM' }}</h4>
-            </div>
-            <div class="col-5">
-                <h5>{{expense.title}}</h5>
-            </div>
-            <div class="col-3">
-                <p>{{expense.detail.paidBy.length > 1 ? expense.detail.paidBy.length + ' people paid': expense.detail.paidBy[0] + ' paid'}}</p>
-                <h5 class="text-dark">{{expense.currency}} {{expense.detail.amount}}</h5>
-            </div>
-            <div class="col-3">
-                <p>You Lent:</p>
-                <h5 [ngClass]="expense.balance < 0 ? 'text-success': 'text-danger'">{{expense.currency}} {{expense.detail.shares[3].gets-expense.detail.shares[3].owes}}</h5>
-            </div>
-        </div>
+<div>
+  <div
+    class="container-fluid"
+    style="cursor: pointer"
+    (click)="OpenExpenseDetail()"
+  >
+    <div class="row">
+      <div
+        class="col-1 d-flex align-items-center justify-content-center"
+        style="text-align: center"
+      >
+        <h4>{{ expense.date | date : "dd MMM" }}</h4>
+      </div>
+      <div class="col-5">
+        <h5>{{ expense.title }}</h5>
+      </div>
+      <div class="col-3">
+        <p>
+          {{
+            expense.detail.paidBy.length > 1
+              ? expense.detail.paidBy.length + " people paid"
+              : expense.detail.paidBy[0] + " paid"
+          }}
+        </p>
+        <h5 class="text-dark">
+          {{ expense.detail.amount | currency : expense.currency}}
+        </h5>
+      </div>
+      <div class="col-3">
+        <p>You {{ expense.balance > 0 ? "Lent:" : "Owe:" }}</p>
+        <h5 [ngClass]="expense.balance > 0 ? 'text-success' : 'text-danger'">
+          {{ expense.detail.userShare?.gets | currency : expense.currency }}
+        </h5>
+      </div>
     </div>
+  </div>
 </div>

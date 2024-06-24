@@ -1,0 +1,55 @@
+<nav class="navbar p-2" style="width: 100%">
+  <div class="container-fluid">
+    <div class="navbar-brand">
+      <h2>
+        <p-avatar 
+          icon="pi pi-users" 
+          styleClass="mr-2"
+          size="xlarge" 
+          [style]="{ 'background-color': 'transparent' }"
+          />
+        {{ group?.name ?? "..." }}
+        <p-avatar 
+          [routerLink]="['settings']"
+          routerLinkActive="active"
+          icon="pi pi-cog" 
+          styleClass="mr-2"
+          pTooltip="Edit Group Details"
+          tooltipPosition="right"
+          size="large" 
+          [style]="{ 'background-color': 'transparent' }"
+          />
+      </h2>
+      <p class="mb-0" style="font-size: 16px;">
+        {{ group?.description ?? "....." }}
+      </p>
+    </div>
+    <div class="float-right">
+        <p-button
+          class="ms-2"
+          icon="pi pi-plus"
+          [rounded]="true"
+          severity="secondary"
+          [raised]="true"
+          pTooltip="Add Expense"
+          tooltipPosition="left"
+          [outlined]="true"
+          (click)="showExpenseDialog()"
+        />
+        <p-button
+        class="ms-2"
+        icon="pi pi-sync"
+        [rounded]="true"
+        severity="secondary"
+        [raised]="true"
+        pTooltip="Settle Up"
+        [outlined]="true"
+        tooltipPosition="left"
+      />
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>
+
+  

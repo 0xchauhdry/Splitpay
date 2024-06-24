@@ -1,41 +1,21 @@
-import * as i0 from '@angular/core';
+import { Injectable } from '@angular/core';
+import * as mixpanel from 'mixpanel-browser';
+ 
+@Injectable({
+  providedIn: 'root'
+})
+export class MixpanelService {
+  init(userToken: string, mixpanelProjectKey: string, {name, email}): void {    
+    mixpanel.init(mixpanelProjectKey, {track_pageview: "url-with-path-and-query-string"});
+    mixpanel.identify(userToken);
+    mixpanel.people.set({'$name': name, '$email': email});
+  }
+ 
+  log(actionId: string, action: any = {}): void {
+   mixpanel.track(actionId, action);
+  }
 
-export declare class MixpanelService {
-  /**
-
-     * Initialize mixpanel.
-
-     *
-
-     * @param {string} userToken
-
-     * @memberof MixpanelService
-
-     */
-
-  init(userToken: string, mixpanelProjectKey: string): void;
-
-  /**
-
-     * Push new action to mixpanel.
-
-     *
-
-     * @param {string} id Name of the action to track.
-
-     * @param {*} [action={}] Actions object with custom properties.
-
-     * @memberof MixpanelService
-
-     */
-
-  track(id: string, action?: any): void;
-
-  setPeople(object: any, value: any): void;
-
-  identify(): void;
-
-  static ɵfac: i0.ɵɵFactoryDeclaration<MixpanelService, never>;
-
-  static ɵprov: i0.ɵɵInjectableDeclaration<MixpanelService>;
+  reset(): void {
+   mixpanel.reset();
+  }
 }

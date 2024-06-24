@@ -1,30 +1,38 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import { ApiService } from '../api/api.service';
-import { getUser } from '../auth/user.state';
-import { Group } from 'src/app/shared/models/group.model';
+import { Group } from 'src/models/group.model';
+import { AuthService } from '../auth/auth.service';
+import { User } from 'src/models/user.model';
+import { GroupRequest } from 'src/models/request/group.request.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GroupService {
-  constructor(private apiService: ApiService, private store: Store) {}
-  groupBaseAPIUrl: string = 'group';
-
-  public GetAll(): Observable<any> {
-    return this.store.select(getUser).pipe(
-      switchMap((user: any) => {
-        return this.apiService.get(`${this.groupBaseAPIUrl}/getAll/${user.user.UserId}`);
-      })
-    );
+  userId: number = 0;
+  constructor(private apiService: ApiService, private authService: AuthService) {
+    this.authService.user$.subscribe({
+      next: (user: User) => {
+        if(user){
+          this.userId = user.id;
+        }
+      }
+    });
   }
 
-  public Add(group: Group): Observable<any>{
-    return this.apiService.post(`${this.groupBaseAPIUrl}/add`, group);
+  public getAll(): Observable<any> {
+    return this.apiService.get(`group/getAll/${this.userId}`);
   }
-  public Get(groupId: number): Observable<any>{
-    return this.apiService.get(`${this.groupBaseAPIUrl}/get/${groupId}`);
+
+  public add(group: Group): Observable<any>{
+    return this.apiService.post(`group/add`, group);
+  }
+
+  public update(group: GroupRequest): Observable<any>{
+    return this.apiService.put(`group/update`, group);
+  }
+  public get(groupId: number): Observable<any>{
+    return this.apiService.get(`group/get/${groupId}`);
   }
 }
