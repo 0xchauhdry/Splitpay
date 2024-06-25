@@ -15,7 +15,7 @@ export const apiRequestInterceptor: HttpInterceptorFn = (
   const authService = inject(AuthService);
   const modifiedReq = request.clone({
     setHeaders: {
-      'CSRF-Token': authService.csrfToken
+      'X-CSRF-Token': authService.csrfToken
     },
     withCredentials: true
   });
