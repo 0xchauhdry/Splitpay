@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { clearUser, getUser, setUser } from './user.state';
-import { User } from 'src/models/user.model';
+import { User } from 'src/shared/models/user.model';
 import { Observable, map } from 'rxjs';
 import { Router } from '@angular/router';
 import { NotifierService } from '../services/notifier.service';
+import { setUser, clearStore } from 'src/store/actions';
+import { getUser } from 'src/store/selectors';
+import { GoogleLoginProvider, SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AuthService {  
   private readonly USER_STORAGE_KEY = 'user';
   private _csrfToken: string = '';
   user$: Observable<User>;
+  accessToken: any;
 
   get csrfToken(): any {
     return this._csrfToken;
@@ -22,12 +23,32 @@ export class AuthService {
     this._csrfToken = newValue;
   }
 
-  constructor(private store: Store,
+  constructor(
+    private store: Store,
     private router: Router,
-    private notifier: NotifierService
+    private notifier: NotifierService,
+    private socialAuth: SocialAuthService,
   ){
-      this.loadUserFromLocalStorage()
-      this.user$ = this.store.select(getUser);
+    this.loadUserFromLocalStorage();
+    this.user$ = this.store.select(getUser);
+  }
+
+  signOut(): void {
+    this.socialAuth.signOut();
+  }
+
+  refreshToken(): void {
+    this.socialAuth.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID);
+  }
+
+  getAccessToken(): void {
+    this.socialAuth
+    .getAccessToken(GoogleLoginProvider.PROVIDER_ID)
+    .then(accessToken => this.accessToken = accessToken);
+  }
+
+  refreshAccessToken(): void {
+    this.socialAuth.refreshAccessToken(GoogleLoginProvider.PROVIDER_ID);
   }
 
   loginUser(user: User): void {
@@ -37,7 +58,7 @@ export class AuthService {
 
   logoutUser(): void {
     localStorage.removeItem(this.USER_STORAGE_KEY);
-    this.store.dispatch(clearUser());
+    this.store.dispatch(clearStore());
   }
 
   isLoggedIn(): Observable<boolean> {
@@ -49,7 +70,7 @@ export class AuthService {
     if (userJson && userJson !== 'undefined' && userJson.trim() !== '') {
       try {
         const user: User = JSON.parse(userJson);
-        this.store.dispatch(setUser(user));
+        this.store.dispatch(setUser({ user }));
       } catch (error) {
         this.notifier.error('Error parsing user JSON from localStorage', error);
         localStorage.removeItem(this.USER_STORAGE_KEY);

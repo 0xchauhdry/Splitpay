@@ -8,17 +8,17 @@ import {
   Validators
 } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
-import { User } from 'src/models/user.model';
+import { User } from 'src/shared/models/user.model';
 import { UserService } from 'src/services/components/user.service';
-import { LogIn } from 'src/models/logIn.model';
+import { LogIn } from 'src/shared/models/logIn.model';
 import { Router, RouterModule } from '@angular/router';
 import { Subscription, finalize } from 'rxjs';
 import { NotifierService } from 'src/services/services/notifier.service';
 import { ValidatorService } from 'src/services/common/validator.service';
 import { CommonModule } from '@angular/common';
-import { MessageService } from 'primeng/api';
 import { LoaderService } from 'src/services/services/loader.service';
 import { MixpanelService } from 'src/services/services/mixpanel.service';
+import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 
 @Component({
   selector: 'app-login',
@@ -29,17 +29,20 @@ import { MixpanelService } from 'src/services/services/mixpanel.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    GoogleSigninButtonModule
   ],
   providers:[
-    MessageService
+    ValidatorService,
+    UserService
   ]
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  logInForm: FormGroup = new FormGroup({});
+  logInForm: FormGroup;
   isPasswordError: boolean = false;
   isUsernameError: boolean = false;
   subscription: Subscription;
+  accessToken: any;
 
   constructor(private formBuilder: FormBuilder,
      private loginService: UserService,
@@ -96,7 +99,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .subscribe({
       next: (res: User) => {
         this.authService.loginUser(res);
-        this.mixpanel.log('Logged In')
+        this.mixpanel.log('Logged In');
         this.router.navigate(['home']);
       },
       error: (err) => {

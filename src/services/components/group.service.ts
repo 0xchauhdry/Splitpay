@@ -1,28 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../api/api.service';
-import { Group } from 'src/models/group.model';
-import { AuthService } from '../auth/auth.service';
-import { User } from 'src/models/user.model';
-import { GroupRequest } from 'src/models/request/group.request.model';
+import { Group } from 'src/shared/models/group.model';
+import { GroupRequest } from 'src/shared/models/request/group.request.model';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GroupService {
-  userId: number = 0;
-  constructor(private apiService: ApiService, private authService: AuthService) {
-    this.authService.user$.subscribe({
-      next: (user: User) => {
-        if(user){
-          this.userId = user.id;
-        }
-      }
-    });
-  }
+  constructor(private apiService: ApiService) {}
 
   public getAll(): Observable<any> {
-    return this.apiService.get(`group/getAll/${this.userId}`);
+    return this.apiService.get(`group/all`);
   }
 
   public add(group: Group): Observable<any>{
@@ -32,7 +19,16 @@ export class GroupService {
   public update(group: GroupRequest): Observable<any>{
     return this.apiService.put(`group/update`, group);
   }
+  
   public get(groupId: number): Observable<any>{
-    return this.apiService.get(`group/get/${groupId}`);
+    return this.apiService.get(`group/${groupId}`);
+  }
+  
+  public getBalances(groupId: number): Observable<any>{
+    return this.apiService.get(`group/${groupId}/balances`);
+  }
+  
+  public delete(groupId: number): Observable<any>{
+    return this.apiService.delete(`group/${groupId}`);
   }
 }

@@ -1,0 +1,60 @@
+<p-card>
+  <div class="container-fluid" (click)="OpenExpenseDetail()">
+    <div class="row">
+      <div class="col-1 text-center">
+        <div><i class="pi pi-calendar"></i></div>
+        <div style="font-weight: bold;"> {{ expense.date | date : "dd MMM" }}</div> 
+      </div>
+      @if(expense.isSettlement){
+        <div class="col-10  align-self-center">
+          {{ payer.name.display }} paid {{ receipent.name.display }} 
+          {{ totalPaid | currency: expense.currency.code }}
+        </div>
+      }
+      @else {
+        <div class="col-7">
+          <span style="font-weight: bold;" >{{ expense.title }}</span>
+          <div>
+            {{ payers.length > 1 ? payers.length + " people paid" : payerName + " paid" }}
+            {{ totalPaid | currency : expense.currency.code }}
+          </div>
+        </div>
+        <div class="col-3 align-self-center">
+          @if(notInvolved){
+            <span> {{ "You are not involved" }}</span>
+          }
+          @else {
+            @if(balance === 0){
+              <span> {{ "No Balance" }}</span>
+            }
+            @else {
+              <span> You {{ balance > 0 ? "Lent:" : "Owe:" }}</span>
+              <span [ngClass]="balance > 0 ? 'text-success' : 'text-danger'">
+                {{ balance | currency : expense.currency.code }}
+              </span>
+            }
+          }
+        </div>
+      }
+      <div class="col-1 d-flex align-self-center">
+        <p-avatar 
+        icon="pi pi-pencil"
+        class="hoverable"
+        [style]="{ 'background-color': 'transparent' }"
+        pTooltip="Edit"
+        [tooltipOptions]="tooltipOptions" 
+        (click)="$event.stopPropagation(); editExpense()"
+        />
+        <p-avatar 
+        icon="pi pi-trash" 
+        class="hoverable"
+        [style]="{ 'color': 'red', 'background-color': 'transparent' }"
+        pTooltip="Delete"
+        [tooltipOptions]="tooltipOptions" 
+        (click)="$event.stopPropagation(); deleteExpense()"
+        />
+      </div>
+    </div>
+  </div>
+</p-card>
+<p-confirmDialog />

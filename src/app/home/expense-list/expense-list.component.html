@@ -1,0 +1,23 @@
+<div class="container-fluid mt-1 scrollable" appLazyScroller (scrolled)="scroll()">
+    @if(expenses.length > 0){
+    <p-dataView #dv [value]="expenses">
+      <ng-template pTemplate="list" let-expenses>
+        <div class="grid grid-nogutter">
+          @for (expense of expenses; track expense) {
+            <div class="col-12">
+              <div class="flex flex-column sm:flex-row sm:align-items-center p-2">
+                <div class="row">
+                  <div class="col-12">
+                    <app-expense [expense]="expense"></app-expense>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </ng-template>
+    </p-dataView>
+    } @else {
+    <div class="p-3 text-center">No Record Found</div>
+    }
+  </div>

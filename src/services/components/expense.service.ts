@@ -1,37 +1,52 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ApiService } from '../api/api.service';
-import { ExpensesModel } from 'src/models/expense.model';
-import { AuthService } from '../auth/auth.service';
-import { User } from 'src/models/user.model';
+import { Expense } from 'src/shared/models/expense.model';
+import { SettleUp } from 'src/shared/models/settle-up.model';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root"
 })
 export class ExpenseService {
-  userId: number = 0;
-  constructor(private apiService: ApiService, private authService: AuthService) {
-    this.authService.user$.subscribe({
-      next: (user: User) => {
-        if(user){
-          this.userId = user.id;
-        }
-      }
-    })
+  constructor(private apiService: ApiService) {}
+
+  public add(expense: Expense): Observable<any> {
+    return this.apiService.post(`expense`, expense);
   }
 
-  public Add(expense: ExpensesModel): Observable<any> {
-    return this.apiService.post(`expense/add`, expense);
+  public update(expense: Expense): Observable<any> {
+    return this.apiService.put(`expense/${expense.id}`, expense);
   }
 
-  public Update(id: number, expense: ExpensesModel, comments: string[]): Observable<any> 
+  public delete(expenseId: number): Observable<any> {
+    return this.apiService.delete(`expense/${expenseId}`);
+  }
+
+  public settleUp(settleUp: SettleUp): Observable<any> {
+    return this.apiService.post('expense/settle', settleUp);
+  }
+  
+  public getExpenses(pageNumber: number, pageSize: number): Observable<any> {
+    const queryparams = `pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    return this.apiService.get(`expense/?${queryparams}`);
+  }
+
+  public getGroupExpenses(
+    groupId: number, 
+    pageNumber: number,
+    pageSize: number, 
+    involved: boolean): Observable<any> 
   {
-    return this.apiService.put(`expense/update`, { id, expense, comments });
+    const queryparams = `pageNumber=${pageNumber}&pageSize=${pageSize}&involved=${involved}`;
+    return this.apiService.get(`expense/group/${groupId}?${queryparams}`);
   }
-
-  public GetAll(groupId: number, pageNumber: number, pageSize: number): Observable<any> 
+  
+  public getFriendExpenses(
+    friendId: number, 
+    pageNumber: number, 
+    pageSize: number): Observable<any> 
   {
     const queryparams = `pageNumber=${pageNumber}&pageSize=${pageSize}`;
-    return this.apiService.get(`expense/group/${groupId}?${queryparams}`);
+    return this.apiService.get(`expense/friend/${friendId}?${queryparams}`);
   }
 }

@@ -1,0 +1,31 @@
+:host ::ng-deep p-button {
+  button {
+    border-radius: 6px !important;
+  }
+}
+
+::ng-deep .p-inputnumber {
+  width: 100%;
+}
+
+::ng-deep ul{
+  padding-left: 0 !important;
+}
+
+::ng-deep .p-datepicker{
+  transform-origin: left !important;
+  transform: scale(0.75);
+}
+
+::ng-deep .p-selectbutton {
+  transform: scale(0.6);
+}
+
+.boldText {
+  font-size: 1.1rem;
+  font-weight: bolder;
+}
+
+::ng-deep .p-multiselect-header {
+  display: none;
+}

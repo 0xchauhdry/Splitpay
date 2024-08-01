@@ -1,0 +1,23 @@
+.container-fluid {
+    cursor: pointer;
+}
+
+.hoverable {
+    display: none;
+}
+
+.container-fluid:hover {
+    .hoverable {
+        cursor: pointer;
+        display: inline-block;
+    }
+}
+
+:host ::ng-deep .p-card .p-card-content{
+    padding: 0 !important;
+}
+
+:host ::ng-deep .p-card:hover {
+    transform: scale(1.01); 
+    transition: transform 0.3s ease;
+}

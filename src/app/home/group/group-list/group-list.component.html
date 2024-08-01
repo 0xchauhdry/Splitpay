@@ -1,0 +1,48 @@
+<p-card>
+  <div class="card header-card">
+    <div class="d-flex align-items-center justify-content-between">
+      <div [routerLink]="['../group']" class="d-flex align-items-center">
+        <p-avatar
+          icon="pi pi-users"
+          styleClass="mr-2"
+          size="xlarge"
+          [style]="{ 'background-color': 'transparent' }"
+        />
+        <h5 class="mb-0">Groups</h5>
+      </div>
+      <p-button
+        class="ms-2 me-1"
+        icon="pi pi-plus"
+        [raised]="true"
+        pTooltip="Add Group"
+        [tooltipOptions]="tooltipOptions"
+        [outlined]="true"
+        (click)="addGroup()"
+      />
+    </div>
+  </div>
+  @if(groups.length > 0){
+  <ul class="list-group scrollable">
+    @for (group of groups; track group) {
+    <li
+      class="list-group-item"
+      (click)="navigateToGroup(group)"
+      [class.selected]="group.id == selectedGroupId"
+    >
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="m-0">
+          {{ group.name }}
+        </div>
+        @if(group.balance != 0){
+        <div [ngClass]="group.balance > 0 ? 'text-success' : 'text-danger'">
+          {{ group.balance | currency : group?.currency.code }}
+        </div>
+        }
+      </div>
+    </li>
+    }
+  </ul>
+  } @else {
+  <div class="p-3 text-center">No Record Found</div>
+  }
+</p-card>

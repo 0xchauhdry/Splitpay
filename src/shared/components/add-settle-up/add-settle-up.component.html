@@ -1,0 +1,73 @@
+<form [formGroup]="settleupForm" (ngSubmit)="onSave()">
+    <div class="row d-flex align-items-center mb-2">
+        <div class="col-6 d-flex flex-column">
+            <label for="payer"> Paid by: </label>
+            <p-dropdown 
+              formControlName="payer" 
+              [options]="settleUpConfig.users" 
+              styleClass="me-2"
+              optionLabel="name.display"
+              appendTo="body"
+              (onChange)="payerChange($event)"
+            ></p-dropdown>
+        </div>
+        <div class="col-6 d-flex flex-column">
+            <label for="receipent"> Receipent: </label>
+            <p-dropdown 
+              formControlName="receipent" 
+              [options]="settleUpConfig.users" 
+              styleClass="me-2"
+              optionLabel="name.display"
+              appendTo="body"
+              (onChange)="receipentChange($event)"
+            ></p-dropdown>
+        </div>
+    </div>    
+    <div class="row mb-2">
+        <div class="col-8 d-flex flex-column">
+        <label for="amount">Amount</label>
+        <p-inputNumber 
+            formControlName="amount"
+            inputId="amount" 
+            min="0" [max]="maxAmount" 
+            [maxFractionDigits]="2"
+            [style]="{ 'width': '100%' }"
+        />
+        </div>
+        <div class="col-4 d-flex flex-column">
+          <label for="currency">Currency</label>
+          @if(settleUpConfig.isEdit || !this.isCurrencyEditable){
+            <input pInputText id="currency" formControlName="currency" />
+          }
+          @else {
+            <p-dropdown 
+              formControlName="currency" 
+              [options]="currencies" 
+              optionLabel="code"
+              [style]="{ 'width': '100%' }"
+            ></p-dropdown>
+          }
+        </div>
+    </div>
+    <div class="row">
+        <div class="d-flex justify-content-end gap-2">
+            <p-calendar 
+                formControlName="date" 
+                [showIcon]="true" 
+                [showTime]="true" 
+                [maxDate]="maxDate" 
+                inputId="calendar"
+                appendTo="body"
+            >
+            </p-calendar>
+            <p-button 
+                type="submit"
+                [label]="(settleUpConfig.isEdit ? 'Update' : 'Add') + ' Settlement'"
+                [disabled]="settleupForm.invalid"
+            />
+        </div>
+    </div>
+</form>
+@if(isLoading){
+  <app-loader></app-loader>
+}

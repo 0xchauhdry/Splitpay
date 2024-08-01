@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { UserService } from '../components/user.service';
-import { Image } from '../../models/image.model';
-import { AuthService } from '../auth/auth.service';
 import { NotifierService } from '../services/notifier.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Image } from 'src/shared/models/image.model';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ImageService {
+  constructor(private notifier: NotifierService, private sanitizer: DomSanitizer) {}
+
   private _userImageUrl: BehaviorSubject<SafeUrl> = new BehaviorSubject('');
 
   get userImageUrl(): any {
@@ -18,37 +16,6 @@ export class ImageService {
 
   set userImageUrl(newValue: any) {
     this._userImageUrl.next(newValue);
-  }
-
-  constructor(
-    private userService: UserService,
-    private authService: AuthService,
-    private notifier: NotifierService,
-    private sanitizer: DomSanitizer
-  ) {
-    this.authService
-      .isLoggedIn()
-      .subscribe((isLoggedIn) => {
-        if (isLoggedIn){
-          this.getImage();
-        }
-        else{
-          this.userImageUrl = '';
-        }
-      })
-  }
-
-  getImage() {
-    this.userService.getImage().subscribe({
-      next: (image: Image) => {
-        if (image) {
-          this.userImageUrl = this.imageToSafeUrl(image);
-        }
-        else{
-          this.userImageUrl = '';
-        }
-      },
-    });
   }
 
   async getDataFromBlobUrl(blobUrl: string): Promise<string | ArrayBuffer | null> {
@@ -69,7 +36,7 @@ export class ImageService {
     }
   }
 
-  base64ToBlob(base64: string, contentType: string = ''): Blob {
+  private base64ToBlob(base64: string, contentType: string = ''): Blob {
     const byteCharacters = atob(base64);
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
@@ -84,5 +51,4 @@ export class ImageService {
     let objectUrl = URL.createObjectURL(blob);
     return this.sanitizer.bypassSecurityTrustUrl(objectUrl);
   }
-
 }

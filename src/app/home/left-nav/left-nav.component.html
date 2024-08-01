@@ -1,14 +1,15 @@
 <div class="left-nav">
     <button class="collapse-btn" (click)="toggleNav()"
         pTooltip="Toggle" 
-        tooltipPosition="right" >
+        [tooltipOptions]="tooltipOptions" 
+        >
         <i class="pi pi-bars"></i>
     </button>
     @for (item of items; track $index) {    
     <button class="nav-item"
         [routerLink]="[item.url]" 
         [pTooltip]="item.name" 
-        tooltipPosition="right"
+        [tooltipOptions]="tooltipOptions" 
         >
         <i [class]="item.icon" style="font-size: 24px;"></i>
     </button>

@@ -1,0 +1,207 @@
+<div class="container">
+  <form [formGroup]="expenseForm" (ngSubmit)="onSave()">
+    <div class="row mb-1">
+      <div class="col-4 d-flex flex-column">
+        <label for="group">Group</label>
+        @if(editMode || !this.isGroupEditable){
+          <input pInputText id="group" formControlName="group" />
+        }
+        @else {
+          <p-dropdown 
+            formControlName="group" 
+            [options]="groups" 
+            optionLabel="name"
+            [style]="{ 'width': '100%' }"
+          ></p-dropdown>
+        }
+      </div>
+      <div class="col-3 d-flex flex-column">
+        <label for="currency">Currency</label>
+        @if(editMode || !this.isCurrencyEditable){
+          <input pInputText id="currency" formControlName="currency" />
+        }
+        @else {
+          <p-dropdown 
+            formControlName="currency" 
+            [options]="currencies" 
+            optionLabel="code"
+            [style]="{ 'width': '100%' }"
+          ></p-dropdown>
+        }
+      </div>
+      <div class="col-5 d-flex flex-column">
+        <label for="usersSelect">Friends</label>
+        <p-multiSelect 
+          formControlName="selectedShares" 
+          [options]="users"  
+          optionLabel="name.display"
+          id="usersSelect"
+          appendTo="body"
+          [style]="{ 'width': '100%' }"
+          (onChange)="onUserSelectionChange($event)"
+        />
+      </div>
+    </div>
+    <div class="row mb-1">
+      <div class="col-7 d-flex flex-column">
+        <label for="name">Description</label>
+        <input pInputText id="name" formControlName="desc" />
+      </div>
+      <div class="col-5 d-flex flex-column">
+        <label for="amount">Amount</label>
+        <p-inputNumber 
+          formControlName="amount"
+          inputId="amount" 
+          min="0" [max]="maxAmount" 
+          [maxFractionDigits]="2"
+          [style]="{ 'width': '100%' }"
+          (onInput)="divideAmount()"
+        />
+      </div>
+    </div>
+    <div class="row">  
+      @if(!showAdditionalSettings){
+        <div class="col">
+          <div class="mt-3 mb-3">
+            <span class="boldText"> Paid by: </span>
+            <p-dropdown 
+              formControlName="payer" 
+              [options]="shares.controls" 
+              styleClass="ms-2 me-2"
+              optionLabel="value.name"
+              appendTo="body"
+              (onChange)="payerChange($event)"
+            ></p-dropdown>
+            <span class="boldText"> Split Equally.</span>
+            <i class="pi pi-pen-to-square ms-2"
+              style="cursor: pointer; font-size: 1rem;"
+              pTooltip="Additional Settings"
+              [tooltipOptions]="tooltipOptions" 
+              (click)="showAdditionalSettings = true"
+            ></i>
+          </div>
+        </div>
+      }
+      @else {
+        <div class="col">
+          <div class="mt-3 mb-1"> 
+            <div class="d-flex align-items-center justify-content-start">
+              <span class="boldText"> Paid by: </span>
+              <p-selectButton 
+                [options]="['Single','Multiple']" 
+                formControlName="payerType" 
+                (onChange)="switchPayerType($event)"
+              />
+            </div>
+          </div>
+          @if(singlePayer){
+            <p-dropdown 
+              formControlName="payer" 
+              [options]="shares.controls" 
+              optionLabel="value.name"
+              appendTo="body"
+              (onChange)="payerChange($event)"
+            ></p-dropdown>
+          }
+          @else {
+            <div
+              formArrayName="shares"
+              class="me-2 mb-2"
+              *ngFor="let share of shares.controls; index as i"
+            >
+              <div [formGroupName]="i" class="col mb-3">
+                <div class="form-group d-flex align-items-center">
+                  <label style=" width: 60%;">
+                    {{ share.get("name").value }}:
+                  </label>
+                  <input 
+                  type="number"
+                  style="width: 40%;" 
+                  class="form-control" 
+                  formControlName="paid"
+                  [max]="maxAmount"
+                  [class.is-invalid]="share.get('paid').invalid && share.get('paid').touched"
+                  [pTooltip]="share.get('paid').invalid && share.get('paid').touched ?
+                    'Must be between 0 and ' + maxAmount : null"
+                    [tooltipOptions]="tooltipOptions" 
+                  (input)="checkAmount('paid')">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <p class="text-center" style="color: red" *ngIf="paidSum !== 0">
+                {{ paidSum | absolute | currency: currency?.code }}
+                {{ paidSum >= 0 ? "left" : "over" }}
+              </p>
+            </div>
+          }
+        </div>
+        <div class="col">
+          <div class="mt-3 mb-1">
+            <div class="d-flex align-items-center justify-content-start"> 
+            <span class="boldText">Split:</span>   
+            <p-selectButton 
+              [options]="['Equally','Unequally']" 
+              formControlName="splitType" 
+              (onChange)="switchSplitType($event)"
+            />
+            </div>
+          </div>
+          <div
+            formArrayName="shares"
+            class="me-2 mb-2"
+            *ngFor="let share of shares.controls; index as i"
+          >
+            <div [formGroupName]="i" class="col mb-3">
+              <div class="form-group d-flex align-items-center">
+                <label style=" width: 60%;">
+                  {{ share.get("name").value }}:
+                </label>
+                <input type="number"
+                style="width: 40%;" 
+                class="form-control" 
+                formControlName="owed"
+                [max]="maxAmount"
+                [class.is-invalid]="share.get('owed').invalid && share.get('owed').touched"
+                [pTooltip]="share.get('owed').invalid && share.get('owed').touched ?
+                  'Must be between 0 and ' + maxAmount : null"
+                  [tooltipOptions]="tooltipOptions" 
+                (input)="checkAmount('owed')">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <p class="text-center" style="color: red" *ngIf="owedSum !== 0">
+              {{ owedSum | absolute | currency: currency?.code }}
+              {{ owedSum >= 0 ? "left" : "over" }}
+            </p>
+          </div>
+        </div>
+      }
+    </div>
+    <div class="row">
+      <div class="d-flex justify-content-end gap-2">
+        <div class="col-3">
+          <p-calendar 
+            formControlName="date" 
+            [iconDisplay]="'input'" 
+            [showIcon]="true" 
+            [showTime]="true" 
+            [maxDate]="maxDate" 
+            inputId="calendar"
+            appendTo="body"
+          >
+          </p-calendar>
+        </div>
+        <p-button 
+          type="submit"
+          [label]="(editMode ? 'Update' : 'Add') + ' Expense'"
+          [disabled]="expenseForm.invalid || paidSum !== 0 || owedSum !== 0"
+        />
+      </div>
+    </div>
+  </form>
+</div>
+@if(isLoading){
+  <app-loader></app-loader>
+}

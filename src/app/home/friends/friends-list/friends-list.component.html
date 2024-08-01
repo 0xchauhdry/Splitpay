@@ -1,177 +1,95 @@
-<div style="position: relative">
-    <div class="top-bar">
-        <p-button
+<p-card>
+  <div class="card header-card">
+    <div class="d-flex align-items-center justify-content-between">
+      <div [routerLink]="['../friend']" class="d-flex align-items-center">
+        <p-avatar
+          icon="pi pi-users"
+          styleClass="mr-2"
+          size="xlarge"
+          [style]="{ 'background-color': 'transparent' }"
+        />
+        <h5 class="mb-0">Friends</h5>
+      </div>
+      <p-avatar
+        icon="pi pi-user-plus"
+        pBadge
+        pTooltip="Friend Requests"
+        [tooltipOptions]="tooltipOptions"
+        [class.selectedIcon]="'requests' == activeFilter"
+        (click)="applyFilter('requests')"
+      />
+      <p-avatar
+        icon="pi pi-user-minus"
+        pBadge
+        pTooltip="Pending Requests"
+        [tooltipOptions]="tooltipOptions"
+        [class.selectedIcon]="'requested' == activeFilter"
+        (click)="applyFilter('requested')"
+      />
+      <p-button
+        class="ms-2 me-1"
         icon="pi pi-user-plus"
         [raised]="true"
         pTooltip="Add friend"
-        tooltipPosition="bottom"
+        [tooltipOptions]="tooltipOptions"
         (click)="addFriend()"
-        ></p-button>
+      />
     </div>
-    <!-- Friends Tabs -->
-    <p-tabView>
-        <p-tabPanel>
-            <ng-template pTemplate="header">
-                <div class="flex align-items-center gap-2">
-                    <p-avatar 
-                        icon="pi pi-user"
-                        pTooltip="Friends"
-                        tooltipPosition="bottom"
-                        />
-                </div>
-            </ng-template>
-            <ul class="list-group list-group-flush ms-2"
-                *ngIf="friends.length > 0; else no_friends"
-            >
-                <li class="list-group-item" *ngFor="let friend of friends">
-                    <div class="row">
-                    <div class="col-1 d-flex justify-content-center align-items-center">
-                        <ng-container *ngIf="friend.imageUrl; else avatarTemplate">
-                        <p-avatar
-                            [image]="friend.imageUrl" 
-                            styleClass="mr-2"
-                            size="large"
-                            shape="circle"
-                        ></p-avatar>
-                        </ng-container>
-                        <ng-template #avatarTemplate>
-                        <p-avatar
-                            label="{{ friend.name.first.charAt(0) }}"
-                            styleClass="mr-2"
-                            size="large"
-                            shape="circle"
-                        ></p-avatar>
-                        </ng-template>
-                    </div>
-                    
-                    <div class="col ms-1">
-                        <p class="mb-0 fs-5">
-                        {{ friend.name.first + " " + friend.name.last }}
-                        </p>
-                        <p class="mb-0">{{ friend.username }}</p>
-                    </div>
-                    </div>
-                </li>
-            </ul>
-        </p-tabPanel>
-        <p-tabPanel>
-            <ng-template pTemplate="header">
-                <div class="flex align-items-center gap-2">
-                    <p-avatar 
-                        icon="pi pi-user-plus"
-                        pTooltip="Friend Requests"
-                        tooltipPosition="bottom"
-                        />
-                </div>
-            </ng-template>
-            <ul class="list-group list-group-flush ms-2"
-                *ngIf="requests.length > 0; else no_requests"
-            >
-                <li class="list-group-item" *ngFor="let user of requests">
-                    <div class="row">
-                    <div
-                        class="col-1 d-flex justify-content-center align-items-center"
-                    >
-                        <p-avatar
-                        label="{{ user.name.first.charAt(0) }}"
-                        styleClass="mr-2"
-                        size="large"
-                        shape="circle"
-                        ></p-avatar>
-                    </div>
-                    <div class="col ms-1">
-                        <p class="mb-1 fs-4">
-                        {{ user.name.first + " " + user.name.last }}
-                        </p>
-                        <p class="mb-0">{{ user.username }}</p>
-                    </div>
-                    <div
-                        class="col-2 d-flex justify-content-evenly align-items-center"
-                    >
-                        <p-button
-                        icon="pi pi-check"
-                        [rounded]="true"
-                        [raised]="true"
-                        [outlined]="true"
-                        severity="success"
-                        pTooltip="Accept"
-                        tooltipPosition="top"
-                        (click)="acceptRequest(user)"
-                        ></p-button>
-                        <p-button
-                        icon="pi pi-times"
-                        [rounded]="true"
-                        [raised]="true"
-                        [outlined]="true"
-                        severity="danger"
-                        pTooltip="Reject"
-                        tooltipPosition="top"
-                        (click)="rejectRequest(user)"
-                        ></p-button>
-                    </div>
-                    </div>
-                </li>
-            </ul>
-        </p-tabPanel>
-        <p-tabPanel>
-            <ng-template pTemplate="header">
-                <div class="flex align-items-center gap-2">
-                    <p-avatar 
-                        icon="pi pi-user-minus"
-                        pTooltip="Pending Requests"
-                        tooltipPosition="bottom"
-                        />
-                </div>
-            </ng-template>
-            <ul class="list-group list-group-flush ms-2"
-                *ngIf="requested.length > 0; else no_pending_requests"
-            >
-                <li class="list-group-item" *ngFor="let user of requested">
-                    <div class="row">
-                    <div
-                        class="col-1 d-flex justify-content-center align-items-center"
-                    >
-                        <p-avatar
-                        label="{{ user.name.first.charAt(0) }}"
-                        styleClass="mr-2"
-                        size="large"
-                        shape="circle"
-                        ></p-avatar>
-                    </div>
-                    <div class="col ms-1">
-                        <p class="mb-1 fs-4">
-                        {{ user.name.first + " " + user.name.last }}
-                        </p>
-                        <p class="mb-0">{{ user.username }}</p>
-                    </div>
-                    <div
-                        class="col-1 d-flex justify-content-evenly align-items-center"
-                    >
-                        <p-button
-                        icon="pi pi-times"
-                        [rounded]="true"
-                        [raised]="true"
-                        [outlined]="true"
-                        severity="danger"
-                        pTooltip="Cancel"
-                        tooltipPosition="top"
-                        (click)="cancelRequest(user)"
-                        ></p-button>
-                    </div>
-                    </div>
-                </li>
-            </ul>
-        </p-tabPanel>
-    </p-tabView>
-</div>
-  
-<ng-template #no_friends>
-    <p style="text-align: center;">No friends to show</p>
-</ng-template>
-<ng-template #no_requests>
-    <p style="text-align: center;">No friend requests to show</p>
-</ng-template>
-<ng-template #no_pending_requests>
-    <p style="text-align: center;">No pending friend requests</p>
-</ng-template>
-  
+  </div>
+  @if(filteredFriends.length > 0){
+  <ul class="list-group scrollable">
+    @for (friend of filteredFriends; track friend) {
+    <li class="list-group-item"
+      (click)="navigateToFriend(friend)"
+    >
+      <div class="d-flex align-items-center">
+        <div class="col-2">
+          @if(friend.imageUrl){
+          <p-avatar
+            [image]="friend.imageUrl"
+            styleClass="mr-1"
+            size="small"
+            shape="circle"
+          ></p-avatar>
+          } @else {
+          <p-avatar
+            label="{{ friend.name.first.charAt(0) }}"
+            styleClass="mr-1"
+            size="small"
+            shape="circle"
+          ></p-avatar>
+          }
+        </div>
+        <div [ngClass]="friend.status == 1 ? 'col-7' : 'col-10'">
+          {{ friend.name.display }}
+        </div>
+        @if(friend.status == 1){
+        <div class="col-3 d-flex justify-content-evenly align-items-center">
+          @if(friend.isRequester){
+          <p-avatar
+            icon="pi pi-check"
+            styleClass="text-success"
+            pTooltip="Accept"
+            [tooltipOptions]="tooltipOptions"
+            (click)="acceptRequest(friend)"
+          />
+          }
+          <p-avatar
+            icon="pi pi-times"
+            styleClass="text-danger"
+            [pTooltip]="friend.isRequester ? 'Reject' : 'Cancel'"
+            [tooltipOptions]="tooltipOptions"
+            (click)="
+              friend.isRequester ? rejectRequest(friend) : cancelRequest(friend)
+            "
+          />
+        </div>
+        }
+      </div>
+    </li>
+    }
+  </ul>
+  } @else {
+  <div class="p-3 text-center">No Record Found</div>
+  }
+</p-card>

@@ -6,29 +6,20 @@ nav {
     background-color: #eaeaea !important; 
 }
 
+.navbar {
+    padding: 0px !important;
+}
+
 .container-fluid {
     height: 10vh;
     flex-wrap: nowrap
 }
 
-//user profile
-.profile-panel {
-    padding: .25rem;
-    width: 150px;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-  
-.profile-link, .logout {
-    display: flex;
-    align-items: center;
-    border-radius: 4px;
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
+::ng-deep .p-overlaypanel .p-overlaypanel-content{
+    padding: .75rem !important;
+    background-color: #eaeaea !important; 
 }
 
-.profile-link:hover, .logout:hover {
-    background-color: #f0f0f0;
+.pointer{
+    cursor: pointer;
 }

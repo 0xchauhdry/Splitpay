@@ -1,0 +1,46 @@
+<p-card styleClass="header-card" >
+    <div class="container-fluid d-flex align-item-center justify-content-between">
+      <div class="navbar-brand">
+        <h2>
+          @if(friend?.imageUrl){
+          <p-avatar
+            [image]="friend.imageUrl"
+            styleClass="mr-2"
+            size="xlarge"
+            shape="circle"
+          ></p-avatar>
+          } @else {
+            <p-avatar 
+              icon="pi pi-user" 
+              styleClass="mr-2"
+              size="xlarge" 
+              [style]="{ 'background-color': 'transparent' }"
+            />
+          }
+          {{ friend?.name?.display || "..." }}
+        </h2>
+      </div>
+      <div class="d-flex">
+        <p-button
+          class="ms-2 align-self-center"
+          icon="pi pi-plus"
+          severity="primary"
+          [raised]="true"
+          pTooltip="Add Expense"
+          [tooltipOptions]="tooltipOptions" 
+          (click)="showExpenseDialog()"
+        />
+        <p-button
+          class="ms-2 align-self-center"
+          icon="pi pi-sync"
+          severity="success"
+          [raised]="true"
+          pTooltip="Settle Up"
+          [tooltipOptions]="tooltipOptions" 
+          [outlined]="true"
+          (click)="showSettleUpDialog()"
+        />
+      </div>
+    </div>
+</p-card>
+<app-expense-list [expenses]="expenses" (scrolled)="scroll()"></app-expense-list>

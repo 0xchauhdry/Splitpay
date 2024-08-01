@@ -2,9 +2,9 @@
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
       <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-        <text x="50%" y="50%" text-anchor="middle" fill="#808080" font-size="30px" font-family="Verdana" dy=".3em">PS</text>
+        <text x="50%" y="50%" text-anchor="middle" fill="#808080" font-size="30px" font-family="Verdana" dy=".3em">SP</text>
       </svg>
-      Payment System
+      SplitPay
     </a>
     <div class="row">
       @if(!isLoggedIn){
@@ -17,7 +17,7 @@
       }
       @else {
         <div class="d-flex align-items-center justify-content-between gap-3">
-          <div class="col">
+          <div style="transform: scale(1.5);">
             <notification-center-component
               [subscriberId]="subscriberId"
               [applicationIdentifier]="applicationIdentifier"
@@ -25,41 +25,55 @@
               [colorScheme]="'light'"
             ></notification-center-component>
           </div>
-          <div class="col d-flex align-items-center">
-            <div class="me-3 w-35" (click)="op.toggle($event)">
-              @if (userImageUrl) {
-                <p-avatar 
-                  [image]="userImageUrl" 
-                  styleClass="mr-2 mb-1" 
-                  size="large" 
-                  shape="circle"
-                  [style]="{ 'cursor': 'pointer' }" 
-                />
-              }
-              @else {
-                <p-avatar
-                  icon = "pi pi-user"
-                  styleClass="mr-2 mb-1"
-                  size="large"
-                  shape="circle"
-                  [style]="{ 'cursor': 'pointer' }"
-                />
-              }
-            </div>
-            <p-overlayPanel #op>
-              <div class="profile-panel">
-                <h5 class="username" style="cursor: pointer;">
-                  {{user?.name?.first}}, {{user?.name?.last}}
-                </h5>
-                <a [routerLink]="['home/settings']" class="profile-link">User Profile</a>
-                <div class="logout" (click)="logout()">
-                  <i class="pi pi-sign-out"></i> &nbsp; Log Out
-                </div>
-              </div>
-            </p-overlayPanel>
+          <div class="me-3" (click)="op.toggle($event)">
+            @if (userImageUrl) {
+              <p-avatar
+                [image]="userImageUrl"
+                styleClass="mr-2"
+                size="large"
+                shape="circle"
+                [style]="{ 'cursor': 'pointer' }"
+              />
+            }
+            @else {
+              <p-avatar
+                icon = "pi pi-user"
+                styleClass="mr-2"
+                size="large"
+                shape="circle"
+                [style]="{ 'cursor': 'pointer' }"
+              />
+            }
           </div>
         </div>
       }
     </div>
   </div>
 </nav>
+
+<p-overlayPanel dismissable="true" #op>
+  <div class="box">
+    <div class="p-2 border-bottom border-secondary">
+        <div class="font-weight-medium">{{user?.name.display}}</div>
+        <div class="small text-muted">{{user?.email}}</div>
+    </div>
+    <div class="p-2 d-flex align-items-center pointer" [routerLink]="['home/settings']">
+        <p-avatar icon="pi pi-user" styleClass="mr-2" size="small" shape="circle"
+          [style]="{ 'cursor': 'pointer', 'tranform': 'scale(0.75)' }"
+        ></p-avatar>
+        <div class="ms-2">Profile</div>
+    </div>
+    <div class="p-2 d-flex align-items-center pointer">
+        <p-avatar icon="pi pi-cog" styleClass="mr-2" size="small" shape="circle"
+          [style]="{ 'cursor': 'pointer', 'tranform': 'scale(0.75)' }"
+        ></p-avatar>
+        <div class="ms-2">Change Password</div>
+    </div>
+    <div class="p-2 border-top border-secondary d-flex align-items-center pointer" (click)="logout()">
+        <p-avatar icon="pi pi-sign-out" styleClass="mr-2" size="small" shape="circle"
+          [style]="{ 'cursor': 'pointer', 'tranform': 'scale(0.75)' }"
+        ></p-avatar>
+        <div class="ms-2">Logout</div>
+    </div>
+  </div>
+</p-overlayPanel>

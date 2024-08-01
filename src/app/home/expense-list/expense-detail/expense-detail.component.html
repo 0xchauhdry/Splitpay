@@ -1,0 +1,62 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-6 pe-1 mb-1">
+      <div class="card">
+        <div class="card-header">
+          <h2>{{ expense.amount | currency : expense.currency.code }}</h2>
+          <p>
+            Added by
+            <span class="fw-bold text-primary">
+              {{ expense.addedBy.name.display }}
+            </span>
+            on
+            <span class="fw-bold text-primary">{{
+              expense.date | date : "dd MMM"
+            }}</span>
+          </p>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Expense Details:</h5>
+          @for (share of expense.shares; track $index) {
+          <p class="card-text mb-1">
+            <span style="color: dodgerblue">{{ share.user.name.display }}</span>
+            @if (share.paid > 0) {
+            <span> paid {{ share.paid | currency : expense.currency.code }}</span>
+            } 
+            @if (share.paid > 0 && share.owed > 0){
+            <span> and </span>
+            } 
+            @if(share.owed > 0){
+            <span> owes {{ share.owed | currency : expense.currency.code }}</span>
+            }
+          </p>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-6 h-100 pe-1">
+      <div class="card">
+        <div class="card-header">Comments</div>
+        <div class="card-body">
+          @if(expense.comments.length === 0){
+          <div class="card-text w-100 text-center">No comments to show</div>
+          } 
+          @else {
+          <ul class="list-group list-group-flush">
+            @for(comment of expense.comments; track comment){
+            <li class="list-group-item">
+              <p>{{ comment.addedBy.name.display }} updated the expense</p>
+              <ul>
+                @for(detail of comment.details; track detail){
+                <li>{{ detail }}</li>
+                }
+              </ul>
+            </li>
+            }
+          </ul>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<form [formGroup]="addGroupForm" autocomplete="off" (ngSubmit)="addGroup()">
+  <div class="row">
+    <div class="col-md-8 mb-3">
+      <label for="usersSelect">Friends</label>
+      <p-multiSelect 
+        [options]="friends" 
+        formControlName="users" 
+        optionLabel="name.display"
+        placeholder="Select friends"
+        id="usersSelect"
+        appendTo="body"
+        [style]="{ 'width': '100%' }"
+      />
+    </div>
+    <div class="col-md-4 mb-3">
+      <label for="type">Type</label>
+      <p-dropdown 
+        formControlName="type" 
+        [options]="groupTypes" 
+        optionLabel="label"
+        [style]="{ 'width': '100%' }"
+      ></p-dropdown>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8 mb-3">
+      <label for="nameInput">Name</label>
+      <input
+        type="text"
+        pInputText
+        id="nameInput"
+        formControlName="name"
+        [class.is-invalid]="addGroupForm.get('name').touched && addGroupForm.get('name').invalid"
+      />
+    </div>
+    <div class="col-md-4 mb-3">
+      <label for="currencyInput">Currency</label>
+      <p-dropdown 
+        formControlName="currency" 
+        [options]="currencies" 
+        optionLabel="code"
+        [editable]="true" 
+        [style]="{ 'width': '100%' }"
+      ></p-dropdown>
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="descriptionInput">Description</label>
+    <input
+      type="text"
+      pInputText
+      formControlName="description"
+      id="descriptionInput"
+    />
+  </div>
+  <div class="mb-3 d-flex justify-content-end">
+    <button type="submit" class="btn btn-primary btn-lg">
+      <i class="pi pi-check"></i> Add
+    </button>
+  </div>
+</form>
+@if(isLoading){
+  <app-loader></app-loader>
+}

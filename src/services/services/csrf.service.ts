@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/services/api/api.service';
 
-@Injectable({
-  providedIn: 'root'
-})
-
+@Injectable()
 export class CsrfService{
   constructor(private apiService: ApiService){}
 

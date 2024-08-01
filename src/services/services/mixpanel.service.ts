@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as mixpanel from 'mixpanel-browser';
  
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class MixpanelService {
   init(userToken: string, mixpanelProjectKey: string, {name, email}): void {    
     mixpanel.init(mixpanelProjectKey, {track_pageview: "url-with-path-and-query-string"});

@@ -7,7 +7,7 @@
       <div class="row gx-lg-5 align-items-center">
         <div class="col-lg-6 mb-5 mb-lg-0">
           <h1 class="my-5 display-3 fw-bold ls-tight">
-            The Splitwise <br />
+            The Expense App <br />
             <span class="text-primary">you deserve is here</span>
           </h1>
           <p style="color: hsl(217, 10%, 50.8%)">
@@ -21,6 +21,16 @@
         <div class="col-lg-6 mb-5 mb-lg-0">
           <div class="card">
             <div class="card-body py-5 px-md-5">
+              <div class="d-flex justify-content-center">
+                <asl-google-signin-button 
+                  type='standard' 
+                  size='large'
+                  text='continue_with'
+                  width='300'
+                >
+                </asl-google-signin-button>
+              </div>
+              <div class="text-center p-2 border-bottom">OR</div>
               <form
                 [formGroup]="signUpForm"
                 autocomplete="off"
@@ -73,6 +83,7 @@
                     formControlName="email"
                     class="form-control"
                     [class.is-invalid]="showErrors('email') || isEmailError"
+                    autocomplete="off"
                   />
                   @if (showErrors('email')) {
                     <label class="text-danger">
@@ -90,18 +101,19 @@
                 <div class="form-outline mb-4">
                   <label class="form-label" for="username">Username</label>
                   <input
-                    type="email"
+                    type="text"
                     id="username"
                     formControlName="username"
                     class="form-control"
                     [class.is-invalid]="showErrors('username') || isUsernameError"
+                    autocomplete="off"
                   />
                   @if (showErrors('username')) {
                     <label class="text-danger">
                       Username must be between 6-15 characters.
                     </label>
                   }
-                  @else if (isEmailError){
+                  @else if (isUsernameError){
                     <label class="text-danger">
                       Username Already exists.
                     </label>
@@ -139,12 +151,7 @@
                     *ngIf="showErrors('confirmPassword')"
                     class="text-danger"
                   >
-                    Password is required
-                    <ng-container
-                      *ngIf="signUpForm.hasError('passwordMismatch')"
-                    >
-                      and does not match.
-                    </ng-container>
+                    Password does not match.
                   </label>
                 </div>
 

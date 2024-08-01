@@ -1,25 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'src/services/api/api.service';
-import { LogIn } from '../../models/logIn.model';
-import { User } from '../../models/user.model';
-import { Image } from '../../models/image.model';
-import { AuthService } from '../auth/auth.service';
+import { LogIn } from 'src/shared/models/logIn.model';
+import { User } from 'src/shared/models/user.model';
+import { Image } from 'src/shared/models/image.model';
 
-@Injectable({
-  providedIn: 'root'
-})
-
+@Injectable()
 export class UserService{
-  userId: number = 0;
-  constructor(private apiService: ApiService, private authService: AuthService){
-    this.authService.user$.subscribe({
-      next: (user: User) => {
-        if(user){
-          this.userId = user.id;
-        }
-      }
-    })
-  }
+  constructor(private apiService: ApiService){}
 
   public logIn(logIn : LogIn){
     return this.apiService.post('user/login', logIn)
@@ -29,32 +16,35 @@ export class UserService{
     return this.apiService.post('user/signup', user)
   }
 
-  public exists(username : string, email : string){
-    return this.apiService
-      .get(`user/${this.userId}/exists?username=${username}&email=${email}`)
+  public socialLogin (user : User){
+    return this.apiService.post('user/social-login', user)
   }
 
-  public get(){
-    return this.apiService.get(`user/${this.userId}`)
+  public exists(userId: number, value : string){
+    return this.apiService.get(`user/${userId}/exists?value=${value}`)
+  }
+
+  public checkExists(value : string){
+    return this.apiService.get(`user/exists?value=${value}`)
+  }
+
+  public get(userId: number){
+    return this.apiService.get(`user/${userId}`)
   }
 
   public update(user : User){
-    return this.apiService.put(`user/${this.userId}`, user)
+    return this.apiService.put(`user`, user)
   }
 
   public getCurrencies() {
-    return this.apiService.get(`currency/${this.userId}`);
+    return this.apiService.get(`currency`);
   }
 
   public updateImage(image: Image) {
-    return this.apiService.post(`user/${this.userId}/image`, image);
+    return this.apiService.post(`user/image`, image);
   }
 
-  public getImage() {
-    return this.apiService.get(`user/${this.userId}/image`);
-  }
-
-  public getUserImage(userId: number) {
+  public getImage(userId: number) {
     return this.apiService.get(`user/${userId}/image`);
   }
 }

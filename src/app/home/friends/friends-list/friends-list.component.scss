@@ -1,18 +1,35 @@
-p-button-icon {
-    border-radius: 50%;
+.selected {
+    background-color: #d3d3d3;
+    font-weight: bold;
 }
 
-::ng-deep .p-tabview .p-tabview-panels{
-    padding: 0;
+:host ::ng-deep .p-card .p-card-content,
+:host ::ng-deep .p-card .p-card-body {
+    padding: 0 !important;
 }
 
-.top-bar{
-    position: absolute;
-    right: 0;
-    top: 10px;
-    z-index: 2;
-}
-
-::ng-deep a{
+:host ::ng-deep a{
     text-decoration: none;
+}
+
+::ng-deep .p-avatar .p-badge {
+    display: none;
+}
+
+::ng-deep .selectedIcon .p-badge {
+    display: inline !important;
+}
+
+.list-group-item {
+    cursor: pointer;
+}
+
+.header-card {
+    background-color: #eaeaea;
+    border-radius: 2%;
+}
+
+.scrollable{
+    max-height: 76vh;
+    overflow-y: auto !important;
 }

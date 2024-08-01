@@ -1,0 +1,25 @@
+:host ::ng-deep p-button {
+    button {
+      border-radius: 6px !important;
+    }
+}
+
+::ng-deep ul{
+    padding-left: 0 !important;
+}
+
+::ng-deep .p-inputnumber, ::ng-deep .p-dropdown {
+    width: 100%;
+}
+  
+::ng-deep .p-datepicker{
+    transform-origin: right !important;
+    transform: scale(0.6);
+    left: 575px !important;
+}
+
+:host ::ng-deep .p-calendar input{
+    display: none;
+}
+
+  

@@ -16,29 +16,39 @@ import { filter } from 'rxjs';
 export class LeftNavComponent implements OnInit {
   items = []
   currentUrl: string = '';
+  tooltipOptions = {
+    tooltipPosition: 'right',
+    tooltipStyleClass: 'transformTooltip'
+  };
 
   constructor(private router: Router){
-    this.items.push({
-      name: 'Home',
-      url: '',
-      icon : 'pi pi-home'
-    },{
-      name: 'Search',
-      url: '',
-      icon : 'pi pi-search'
-    },{
-      name: 'Friends',
-      url: 'friend',
-      icon : 'pi pi-user'
-    },{
-      name: 'Groups',
-      url: 'group',
-      icon : 'pi pi-users'
-    },{
-      name: 'Settings',
-      url: 'settings',
-      icon : 'pi pi-cog'
-    },)
+    this.items.push(
+      {
+        name: 'Home',
+        url: '',
+        icon : 'pi pi-home'
+      },
+      // {
+      //   name: 'Personal',
+      //   url: 'personal',
+      //   icon : 'pi pi-wallet'
+      // },
+      {
+        name: 'Friends',
+        url: 'friend',
+        icon : 'pi pi-user'
+      },
+      {
+        name: 'Groups',
+        url: 'group',
+        icon : 'pi pi-users'
+      },
+      {
+        name: 'Settings',
+        url: 'settings',
+        icon : 'pi pi-cog'
+      },
+    )
   }
   ngOnInit(): void {
     this.router.events

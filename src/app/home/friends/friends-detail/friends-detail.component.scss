@@ -1,0 +1,12 @@
+.navbar {
+    background-color: #eaeaea;
+}
+
+:host ::ng-deep .p-card .p-card-content{
+    padding: 0 !important;
+}
+
+:host ::ng-deep .header-card .p-card-body{
+    background-color: #eaeaea;
+    padding: .5rem !important;
+}

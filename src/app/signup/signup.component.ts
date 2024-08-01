@@ -10,14 +10,16 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription, finalize } from 'rxjs';
-import { User } from 'src/models/user.model';
+import { Subscription, debounceTime, distinctUntilChanged, finalize } from 'rxjs';
+import { User } from 'src/shared/models/user.model';
 import { ValidatorService } from 'src/services/common/validator.service';
 import { UserService } from 'src/services/components/user.service';
 import { NotifierService } from 'src/services/services/notifier.service';
 import { CommonModule } from '@angular/common';
 import { MixpanelService } from 'src/services/services/mixpanel.service';
 import { LoaderService } from 'src/services/services/loader.service';
+import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
+import { AuthService } from 'src/services/auth/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -28,10 +30,15 @@ import { LoaderService } from 'src/services/services/loader.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    GoogleSigninButtonModule
+  ],
+  providers:[
+    ValidatorService,
+    UserService
   ]
 })
 export class SignupComponent implements OnInit, OnDestroy {
-  signUpForm: FormGroup = new FormGroup({});
+  signUpForm: FormGroup;
   isUsernameError: boolean = false;
   isEmailError:boolean = false;
   subscription: Subscription;
@@ -42,7 +49,9 @@ export class SignupComponent implements OnInit, OnDestroy {
     private router: Router,
     private notifierService: NotifierService,
     private validator: ValidatorService,
-    private loader: LoaderService
+    private loader: LoaderService,
+    private mixpanel: MixpanelService,
+    private authService: AuthService
   ) {
     this.subscription = new Subscription();
   }
@@ -66,28 +75,48 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.matchPasswordValidator(),
       ]),
     });
-
-    this.signUpForm.get('username').valueChanges.subscribe({
-      next: (username: string) => {
-        if (!this.signUpForm.get('username').invalid){
-          this.isUsernameError = false;
-          this.checkUserExists(username, null);
-        }
-      },
-    })
-
-    this.signUpForm.get('email').valueChanges.subscribe({
-      next: (email: string) => {
-        if (!this.signUpForm.get('email').invalid){
-          this.isEmailError = false;
-          this.checkUserExists(null, email);
-        }
-      },
-    })
+    this.subscribeToUsernameChanges();
+    this.subscribeToEmailChanges();
   }
 
-  checkUserExists(username: string, email: string){
-    this.userService.exists(username, email).subscribe({
+  subscribeToUsernameChanges(){
+    this.subscription.add(
+      this.signUpForm.get('username').valueChanges
+      .pipe(
+        debounceTime(300), 
+        distinctUntilChanged()
+      )
+      .subscribe({
+        next: (username: string) => {
+          if (!this.signUpForm.get('username').invalid){
+            this.isUsernameError = false;
+            this.checkUserExists(username);
+          }
+        },
+      })
+    )
+  }
+
+  subscribeToEmailChanges(){
+    this.subscription.add(
+      this.signUpForm.get('email').valueChanges
+      .pipe(
+        debounceTime(300), 
+        distinctUntilChanged()
+      )
+      .subscribe({
+        next: (email: string) => {
+          if (!this.signUpForm.get('email').invalid){
+            this.isEmailError = false;
+            this.checkUserExists(email);
+          }
+        },
+      })
+    )
+  }
+
+  checkUserExists(value: string){
+    this.userService.checkExists(value).subscribe({
       error: (error) => {
         if(error.message.includes('username')){
           this.isUsernameError = true;
@@ -112,28 +141,32 @@ export class SignupComponent implements OnInit, OnDestroy {
       signUpInstance.email = this.signUpForm.get('email').value;
 
       this.loader.show();
-      this.userService.signUp(signUpInstance)
-      .pipe(
-        finalize(() => {
-          this.loader.hide();
+      this.subscription.add(
+        this.userService.signUp(signUpInstance)
+        .pipe(
+          finalize(() => {
+            this.loader.hide();
+          })
+        )
+        .subscribe({
+          next: (user: User) => {
+            if (user) {
+              this.notifierService.success('User Created Successfully', 'Signed In');
+              this.authService.loginUser(user);
+              this.mixpanel.log('Signed In', { userId : user.id });
+              this.router.navigate(['home']);
+            }
+          },
+          error: (err) => {
+            if(err.message.includes('username')){
+              this.isUsernameError = true;
+            }
+            else if (err.message.includes('email')){
+              this.isEmailError = true;
+            }
+          }
         })
-      )
-      .subscribe({
-        next: async (res) => {
-          if (res) {
-            this.notifierService.success('User Created Successfully', 'Signed In')
-            this.router.navigate(['/login']);
-          }
-        },
-        error: (err) => {
-          if(err.message.includes('username')){
-            this.isUsernameError = true;
-          }
-          else if (err.message.includes('email')){
-            this.isEmailError = true;
-          }
-        }
-      });
+      );
     }
   }
 
@@ -144,7 +177,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   matchPasswordValidator(): ValidatorFn {
     return (control: FormControl): ValidationErrors | null => {
-      const passwordControl = this.signUpForm.get('password');
+      const passwordControl = this.signUpForm?.get('password');
       if (passwordControl && control.value !== passwordControl.value) {
         return { matching: true };
       }

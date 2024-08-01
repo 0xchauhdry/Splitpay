@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -11,9 +11,10 @@ import { NotifierService } from 'src/services/services/notifier.service';
 import { FriendService } from 'src/services/components/friend.service';
 import { ValidatorService } from 'src/services/common/validator.service';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
-import { finalize } from 'rxjs';
+import { Subscription, finalize } from 'rxjs';
 import { LoaderService } from 'src/services/services/loader.service';
 import { MixpanelService } from 'src/services/services/mixpanel.service';
+import { UserService } from 'src/services/components/user.service';
 
 @Component({
   selector: 'app-add-friend',
@@ -24,9 +25,14 @@ import { MixpanelService } from 'src/services/services/mixpanel.service';
     ReactiveFormsModule,
     InputTextModule,
   ],
+  providers: [
+    ValidatorService,
+    UserService
+  ]
 })
-export class AddFriendComponent implements OnInit {
+export class AddFriendComponent implements OnInit, OnDestroy {
   addFriendForm: FormGroup;
+  subscription: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,37 +42,52 @@ export class AddFriendComponent implements OnInit {
     private dialogRef:DynamicDialogRef<AddFriendComponent>,
     private loader: LoaderService,
     private mixpanel: MixpanelService
-  ) {}
-
-  ngOnInit(): void {
+  ) {
+    this.subscription = new Subscription();
     this.addFriendForm = this.formBuilder.group({
       email: new FormControl('', [Validators.required, this.validator.emailValidator()]),
     });
   }
 
+  ngOnInit(): void {}
+
   AddFriend() {
     if (this.addFriendForm.valid) {
-      let email = this.addFriendForm.get('email')?.value ?? '';
-
+      let email = this.addFriendForm.get('email').value || '';
       this.loader.show();
-      this.userService.AddFriend(email)
-      .pipe(
-        finalize(() => {
-          this.loader.hide();
+      this.subscription.add(
+        this.userService.AddFriend(email)
+        .pipe(
+          finalize(() => {
+            this.loader.hide();
+          })
+        )
+        .subscribe({
+          next: (res: any) => {
+            if(res == 'User not found.'){
+              this.notificationService.error('User not found', 'Not Found');
+              this.dialogRef.close(false);
+            } 
+            else if (res.hasOwnProperty('status')) {
+              let status = 'friends';
+              if (res.status == 2){
+                if (res.isRequester) status = 'friend requests';
+                else status = 'pending requests';
+              }
+              this.notificationService.info(`User is already in ${status} lsit.`);
+              this.dialogRef.close(false);
+            } 
+            else {
+              this.notificationService.success('Request Sent to ' + email,'Request Sent');
+              this.mixpanel.log('Request Sent', { email })
+              this.dialogRef.close(true);
+            }
+          },
         })
-      )
-      .subscribe({
-        next: (res: any) => {
-          if (res[0].hasOwnProperty('FriendshipStatus')) {
-            this.notificationService.info(res[0].FriendshipStatus);
-            this.dialogRef.close(false);
-          } else {
-            this.notificationService.success('Request Sent to ' + email,'Request Sent');
-            this.mixpanel.log('Request Sent', { email })
-            this.dialogRef.close(true);
-          }
-        },
-      });
+      );
     }
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

@@ -1,7 +1,10 @@
 <app-nav-bar></app-nav-bar>
-<div class="content">
+<div class="app-content">
     <router-outlet></router-outlet>
 </div>
 <p-toast></p-toast>
-<app-loader *ngIf="loaderService.isLoading | async"></app-loader>
+@if(loader.isLoading | async){
+    <app-loader></app-loader>
+}
+
 
