@@ -1,6 +1,6 @@
 export const environment = {
   mixpanelKey: '541f04aa3c17f953c1251f503b382167',
-  baseAPIURL: 'https://splitpay-a5dwhacvdhbwdmgh.eastus-01.azurewebsites.net/api',
+  baseAPIURL: 'https://paymentsystem-zvqm.onrender.com/api',
   production: true,
   applicationIdentifier: '8es-0XtO8WqT',
   novuAPIKey: 'd816844b2d10ce0b0f7a443978d0692c',
