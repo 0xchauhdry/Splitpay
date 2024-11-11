@@ -1,27 +1,52 @@
-# PSClient
+## Splitpay
+Welcome to Splitpay, a web application for tracking and managing shared expenses. Built with Angular on the frontend and Node.js for the API backend, this app is designed to help users manage expenses, track shared costs, and keep finances organized with ease.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.0.
+## Features
+Add, view, and edit personal and group expenses.
+Track who paid and who owes across groups of friends or family.
+Responsive and easy-to-use interface.
+Real-time updates with backend sync.
+Detailed expense breakdowns and summaries.
+## Tech Stack
+Frontend: Angular, TypeScript, Bootstrap
+Backend: Node.js, Express, MSSQL
+Other Tools: PrimeNG 
 
-## Development server
+## Getting Started
+These instructions will get a copy of the project up and running on your local machine for development and testing purposes.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Prerequisites
+Ensure you have the following installed on your system:
 
-## Code scaffolding
+Node.js (>=14.x)
+Angular CLI (>=12.x)
+MSSQL for the backend database
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Installation
+Clone the repository:
+git clone https://github.com/yourusername/expense-app.git
+cd splitpay
 
-## Build
+Install dependencies for the client:
+npm install
+ng serve
+The Angular app will run at http://localhost:4200.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Contributing
+We welcome contributions from the community! Here’s how you can get involved:
 
-## Running unit tests
+Fork the repository and create your feature branch:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+git checkout -b feature/YourFeature
+Commit your changes:
 
-## Running end-to-end tests
+git commit -m 'Add some feature'
+Push to the branch:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+git push origin feature/YourFeature
+Open a Pull Request
 
-## Further help
+For more details, see CONTRIBUTING.md.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
