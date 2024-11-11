@@ -24,7 +24,7 @@ MSSQL for the backend database
 
 ## Installation
 Clone the repository:
-git clone https://github.com/yourusername/expense-app.git
+git clone [splitpay](https://github.com/0xchauhdry/Splitpay.git)
 cd splitpay
 
 Install dependencies for the client:
