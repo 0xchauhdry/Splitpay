@@ -13,6 +13,7 @@ export class User {
   currency: number;
   imageUrl: SafeUrl;
   image: Image;
+  passwordSet: boolean;
   googleImageUrl: string;
   googleToken: string;
 }

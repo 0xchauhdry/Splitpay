@@ -69,11 +69,11 @@ export class ExpenseComponent implements OnInit, OnDestroy {
     this.subscription = new Subscription();
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.getCurrentUser();
     this.updateLocalVariables();
   }
-  
+
   getCurrentUser(){
     this.subscription.add(
       this.authService.user$
@@ -93,7 +93,7 @@ export class ExpenseComponent implements OnInit, OnDestroy {
     else{
       this.payers = this.expense.shares.filter(x => x.paid > 0) || [];
       this.totalPaid = this.payers.reduce((sum, share) => sum + share.paid, 0) || 0;
-  
+
       if (this.payers.length == 1){
         if (this.payers[0].user.id == this.currentUserId){
           this.payerName = "You"
@@ -101,7 +101,7 @@ export class ExpenseComponent implements OnInit, OnDestroy {
           this.payerName = this.payers[0].user.name.display;
         }
       }
-  
+
       const currentuserShare = this.expense.shares.find(x => x.user.id == this.currentUserId)
       if (currentuserShare == null || currentuserShare == undefined){
         this.notInvolved = true;
@@ -140,10 +140,10 @@ export class ExpenseComponent implements OnInit, OnDestroy {
         expense: this.expense,
         fromComponent: 'Expense'
       };
-      
+
       dialogRef = this.dialogService.open(AddSettleUpComponent, {
         header: 'Settle Up',
-        width: '40vw',
+        width: '600px',
         modal: true,
         data: settleUpConfig,
         contentStyle: { overflow: 'auto' },
@@ -169,7 +169,7 @@ export class ExpenseComponent implements OnInit, OnDestroy {
       })
     );
   }
-  
+
 
   deleteExpense(){
     this.confirmationService.confirm({
@@ -193,7 +193,7 @@ export class ExpenseComponent implements OnInit, OnDestroy {
       }
     });
   }
-  
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }

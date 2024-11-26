@@ -28,6 +28,6 @@ export class ExpenseDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.expense);
+    //implementation pending
   }
 }

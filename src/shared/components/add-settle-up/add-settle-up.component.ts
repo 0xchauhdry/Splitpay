@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { 
+import {
   FormBuilder, FormControl, FormGroup,
-  FormsModule, ReactiveFormsModule, Validators 
+  FormsModule, ReactiveFormsModule, Validators
 } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
@@ -55,7 +55,7 @@ export class AddSettleUpComponent implements OnInit, OnDestroy {
   currencies: Currency[];
 
   constructor(
-    private config: DynamicDialogConfig, 
+    private config: DynamicDialogConfig,
     private authService: AuthService,
     private notifier: NotifierService,
     private expenseService: ExpenseService,
@@ -67,7 +67,6 @@ export class AddSettleUpComponent implements OnInit, OnDestroy {
     private userService: UserService
   ){
     this.settleUpConfig = this.config.data;
-    console.log(this.settleUpConfig);
     this.subscription = new Subscription();
   }
   ngOnInit(): void {
@@ -79,11 +78,11 @@ export class AddSettleUpComponent implements OnInit, OnDestroy {
       receipent: new FormControl(this.settleUpConfig.receipent, Validators.required),
       amount: new FormControl(Math.abs(this.settleUpConfig.payer.balance), [
         Validators.required,
-        Validators.min(0.01), 
+        Validators.min(0.01),
         Validators.max(this.maxAmount)
       ]),
       currency: new FormControl(
-        { value: this.settleUpConfig.currency.code, disabled: true }, 
+        { value: this.settleUpConfig.currency.code, disabled: true },
         Validators.required
       ),
       date: new FormControl(this.maxDate, Validators.required)
@@ -107,7 +106,7 @@ export class AddSettleUpComponent implements OnInit, OnDestroy {
       })
     );
   }
-  
+
   getCurrencies(){
     this.subscription.add(
       this.userService.getCurrencies()
@@ -120,7 +119,7 @@ export class AddSettleUpComponent implements OnInit, OnDestroy {
       })
     );
   }
-  
+
   payerChange(event: DropdownChangeEvent){
     const receipent = this.settleupForm.get('receipent');
     if (receipent.value.id == event.value.id){
@@ -211,7 +210,7 @@ export class AddSettleUpComponent implements OnInit, OnDestroy {
       { user: receipent, paid: 0, owed: amount }
     ];
   }
-  
+
   updateExpense(expense: Expense){
     this.isLoading = true;
     this.subscription.add(

@@ -85,7 +85,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.userService.socialLogin(signinUser).subscribe({
       next: (user: User) => {
-        console.log(user)
         this.notifier.success('User Logged In Successfully', 'Signed In');
         this.authService.loginUser(user);
         this.mixpanel.log('Social Login', { userId : user.id });
@@ -119,7 +118,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.mixpanel.init(`ps_${user.id}`, environment.mixpanelKey,
              { name: user.username, email: user.email});
           this.mixpanel.log('Online');
-        } 
+        }
       })
     );
   }

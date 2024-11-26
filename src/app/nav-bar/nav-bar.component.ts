@@ -13,6 +13,8 @@ import { User } from 'src/shared/models/user.model';
 import { ImageService } from 'src/services/common/image.service';
 import { AvatarModule } from 'primeng/avatar';
 import { SafeUrl } from '@angular/platform-browser';
+import { DialogService } from 'primeng/dynamicdialog';
+import { ChangePasswordComponent } from 'src/shared/components/change-password/change-password.component';
 
 @Component({
   selector: 'app-nav-bar',
@@ -28,6 +30,9 @@ import { SafeUrl } from '@angular/platform-browser';
     InputSwitchModule,
     AvatarModule
   ],
+  providers:[
+    DialogService
+  ]
 })
 export class NavBarComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean = false;
@@ -38,10 +43,11 @@ export class NavBarComponent implements OnInit, OnDestroy {
   userImageUrl: SafeUrl;
   isDarkMode: boolean = false;
   @ViewChild('op') overlayPanel: OverlayPanel;
-  
+
   constructor(private authService: AuthService,
      private router: Router,
      private imageService: ImageService,
+     private dialog: DialogService,
      ) {
     this.subscription = new Subscription();
   }
@@ -66,7 +72,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
         },
       })
     );
-    
+
     this.subscription.add(
       this.imageService.userImageUrl.subscribe({
         next: (imageUrl: string) => {
@@ -83,6 +89,16 @@ export class NavBarComponent implements OnInit, OnDestroy {
   toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
     document.body.classList.toggle('dark-mode', this.isDarkMode);
+  }
+
+  updatePassword(){
+    this.dialog.open(ChangePasswordComponent, {
+      header: this.user.passwordSet ? 'Change Password' : 'Set Password',
+      width: '600px',
+      modal: true,
+      contentStyle: { overflow: 'auto' },
+      breakpoints: { '1199px': '75vw', '575px': '90vw' },
+    });
   }
 
   logout() {

@@ -63,11 +63,11 @@
         ></p-avatar>
         <div class="ms-2">Profile</div>
     </div>
-    <div class="p-2 d-flex align-items-center pointer">
+    <div class="p-2 d-flex align-items-center pointer" (click)="updatePassword()">
         <p-avatar icon="pi pi-cog" styleClass="mr-2" size="small" shape="circle"
           [style]="{ 'cursor': 'pointer', 'tranform': 'scale(0.75)' }"
         ></p-avatar>
-        <div class="ms-2">Change Password</div>
+        <div class="ms-2">{{ user?.passwordSet ? 'Change Password' : 'Set Password'}}</div>
     </div>
     <div class="p-2 border-top border-secondary d-flex align-items-center pointer" (click)="logout()">
         <p-avatar icon="pi pi-sign-out" styleClass="mr-2" size="small" shape="circle"

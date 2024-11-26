@@ -128,13 +128,13 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
 
     const dialogRef = this.dialogService.open(AddSettleUpComponent, {
       header: 'Settle Up',
-      width: '40vw',
+      width: '600px',
       modal: true,
       data: settleUpConfig,
       contentStyle: { overflow: 'auto' },
       breakpoints: { '1199px': '75vw', '575px': '90vw' },
     });
-    
+
     this.subscription.add(
       dialogRef.onClose.subscribe((result: boolean) => {
         if (result){

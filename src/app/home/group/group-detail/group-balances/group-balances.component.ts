@@ -47,7 +47,7 @@ export class GroupBalancesComponent implements OnInit, OnDestroy {
   };
   users: User[] = [];
   group: Group;
-  
+
   constructor(
     private groupBroadcastService: GroupBroadcastService,
     private expenseBroadcastService: ExpenseBroadcastService,
@@ -114,7 +114,7 @@ export class GroupBalancesComponent implements OnInit, OnDestroy {
 
     const dialogRef = this.dialogService.open(AddSettleUpComponent, {
       header: 'Settle Up',
-      width: '40vw',
+      width: '600px',
       modal: true,
       data: settleUpConfig,
       contentStyle: { overflow: 'auto' },
@@ -126,7 +126,7 @@ export class GroupBalancesComponent implements OnInit, OnDestroy {
         if (update){
           this.expenseBroadcastService.updateBalance = true;
           this.getGroupBalances();
-        } 
+        }
       })
     )
   }

@@ -44,6 +44,10 @@ export class UserService{
     return this.apiService.post(`user/image`, image);
   }
 
+  public updatePassword(password) {
+    return this.apiService.put(`user/password`, password);
+  }
+
   public getImage(userId: number) {
     return this.apiService.get(`user/${userId}/image`);
   }

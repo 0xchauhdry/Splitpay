@@ -67,7 +67,7 @@ export class FriendsDetailComponent implements OnInit, OnDestroy {
   ) {
     this.subscription = new Subscription();
   }
-  
+
   ngOnInit() {
     this.getLoggedInUser();
 
@@ -93,7 +93,7 @@ export class FriendsDetailComponent implements OnInit, OnDestroy {
       })
     );
   }
-  
+
   getFriend(friendId: number){
     this.subscription.add(
       this.store.select(getFriends)
@@ -105,7 +105,7 @@ export class FriendsDetailComponent implements OnInit, OnDestroy {
       })
     )
   }
-  
+
   showExpenseDialog() {
     const dialogRef = this.dialogService.open(AddExpenseComponent, {
       header: 'Add Expense',
@@ -137,13 +137,13 @@ export class FriendsDetailComponent implements OnInit, OnDestroy {
 
     const dialogRef = this.dialogService.open(AddSettleUpComponent, {
       header: 'Settle Up',
-      width: '40vw',
+      width: '600px',
       modal: true,
       data: settleUpConfig,
       contentStyle: { overflow: 'auto' },
       breakpoints: { '1199px': '75vw', '575px': '90vw' },
     });
-    
+
     this.subscription.add(
       dialogRef.onClose.subscribe((result: boolean) => {
         if (result){
