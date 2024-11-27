@@ -46,20 +46,6 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.getCurrentUser();
-
-    this.passwordForm = this.formBuilder.group({
-      oldPassword: ['', Validators.required],
-      newPassword: ['', [
-        Validators.required,
-        Validators.minLength(6),
-      ]],
-      confirmPassword: ['', Validators.required]
-    }, { validators: this.passwordMatchValidator });
-  }
-  passwordMatchValidator(form: FormGroup) {
-    const newPassword = form.get('newPassword')?.value;
-    const confirmPassword = form.get('confirmPassword')?.value;
-    return newPassword === confirmPassword ? null : { passwordMismatch: true };
   }
 
   getCurrentUser(){
@@ -67,14 +53,29 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
       this.authService.user$
       .subscribe((user: User) => {
         this.currentUser = user;
+        this.passwordForm = this.formBuilder.group({
+          oldPassword: [''],
+          newPassword: ['', [
+            Validators.required,
+            Validators.minLength(6),
+          ]],
+          confirmPassword: ['', Validators.required]
+        }, { validators: this.passwordMatchValidator });
 
-        if(!this.currentUser.passwordSet){
-          this.passwordForm.get('oldPassword').clearValidators();
+        if(this.currentUser.passwordSet){
+          this.passwordForm.get('oldPassword').addValidators(Validators.required);
           this.passwordForm.get('oldPassword').updateValueAndValidity();
         }
       })
     );
   }
+
+  passwordMatchValidator(form: FormGroup) {
+    const newPassword = form.get('newPassword')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
+    return newPassword === confirmPassword ? null : { passwordMismatch: true };
+  }
+  
   onSubmit(){
     if (this.passwordForm.invalid){
       this.notifier.error('Form is Invalid', 'Invalid');
