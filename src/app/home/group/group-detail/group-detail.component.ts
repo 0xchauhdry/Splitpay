@@ -16,9 +16,14 @@ import { AvatarModule } from 'primeng/avatar';
 import { Store } from '@ngrx/store';
 import { getGroups } from 'src/store/selectors';
 import { AddSettleUpComponent } from 'src/shared/components/add-settle-up/add-settle-up.component';
-import { SettleUpConfig } from 'src/shared/models/settle-up-config.model';
+import { SettleUpConfig } from 'src/shared/models/request/settle-up-config.model';
 import { CardModule } from 'primeng/card';
 import { ExpenseBroadcastService } from 'src/services/broadcast/expense-broadcast.service';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
+import { CalendarModule } from 'primeng/calendar';
+import { GetExpenseRequest } from 'src/shared/models/request/get-expense.request.model';
+import { CommonService } from 'src/services/common/common.service';
 
 @Component({
   selector: 'app-group-detail',
@@ -35,7 +40,10 @@ import { ExpenseBroadcastService } from 'src/services/broadcast/expense-broadcas
     AvatarModule,
     RouterOutlet,
     RouterModule,
-    CardModule
+    CardModule,
+    CheckboxModule,
+    CalendarModule,
+    ReactiveFormsModule
   ],
   providers: [DialogService],
 })
@@ -49,6 +57,9 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
     tooltipPosition: 'bottom',
     tooltipStyleClass: 'transformTooltip'
   };
+  filterForm: FormGroup;
+  currentFilters: GetExpenseRequest = new GetExpenseRequest(1, 10);
+  showFilters: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -63,16 +74,55 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getLoggedInUser();
+    this.filterForm = new FormGroup({
+      dateRange: new FormControl(''),
+      involvedMe: new FormControl(false)
+    });
 
+    this.subscribeToRoute();
+    this.subscribeToShowFilters();
+  }
+
+  subscribeToRoute(){
     this.subscription.add(
       this.route.paramMap
       .subscribe(params => {
          let groupId = +params.get('groupId');
          if (groupId !== this.group?.id || 0){
+          this.filterForm.patchValue({
+            dateRange: new FormControl(''),
+            involvedMe: new FormControl(false)
+          })
           this.getGroup(groupId);
          }
       })
     );
+  }
+
+  subscribeToShowFilters(){
+    this.groupBroadcastService.showFilters.subscribe((show) => {
+      this.showFilters = show;
+      if(!this.showFilters){
+        this.filterForm.patchValue({
+          dateRange: new FormControl(''),
+          involvedMe: new FormControl(false)
+        })
+      }
+    })
+  }
+
+  dateClose(){
+    let [startDate, endDate] = this.filterForm.get('dateRange').value;
+    if(this.currentFilters.dateRange.startDate !== startDate || this.currentFilters.dateRange.endDate !== endDate){
+      this.currentFilters.dateRange.startDate = startDate ? CommonService.setStartDate(startDate) : null;
+      this.currentFilters.dateRange.endDate = endDate ? CommonService.setEndDate(endDate) : null;
+      this.groupBroadcastService.selectedFilters = this.currentFilters;
+    }
+  }
+
+  checkboxChange(event: CheckboxChangeEvent){
+    this.currentFilters.involved = event.checked;
+    this.groupBroadcastService.selectedFilters = this.currentFilters;
   }
 
   getLoggedInUser(){
@@ -148,3 +198,5 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 }
+
+

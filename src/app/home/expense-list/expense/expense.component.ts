@@ -15,7 +15,7 @@ import { NotifierService } from 'src/services/services/notifier.service';
 import { AddExpenseComponent } from 'src/shared/components/add-expense/add-expense.component';
 import { MixpanelService } from 'src/services/services/mixpanel.service';
 import { CardModule } from 'primeng/card';
-import { SettleUpConfig } from 'src/shared/models/settle-up-config.model';
+import { SettleUpConfig } from 'src/shared/models/request/settle-up-config.model';
 import { AddSettleUpComponent } from 'src/shared/components/add-settle-up/add-settle-up.component';
 import { ExpenseDetailComponent } from '../expense-detail/expense-detail.component';
 import { ExpenseBroadcastService } from 'src/services/broadcast/expense-broadcast.service';

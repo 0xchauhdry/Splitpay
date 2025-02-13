@@ -12,7 +12,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RippleModule } from 'primeng/ripple';
 import { Subscription, finalize } from 'rxjs';
 import { Expense, ExpenseComment, UserShare } from 'src/shared/models/expense.model';
-import { SettleUpConfig } from 'src/shared/models/settle-up-config.model';
+import { SettleUpConfig } from 'src/shared/models/request/settle-up-config.model';
 import { SettleUp } from 'src/shared/models/settle-up.model';
 import { User } from 'src/shared/models/user.model';
 import { AuthService } from 'src/services/auth/auth.service';
@@ -62,7 +62,6 @@ export class AddSettleUpComponent implements OnInit, OnDestroy {
     private dialogRef: DynamicDialogRef<AddSettleUpComponent>,
     private mixpanel: MixpanelService,
     private formBuilder: FormBuilder,
-    private common: CommonService,
     private expenseBroadcastService: ExpenseBroadcastService,
     private userService: UserService
   ){
@@ -249,7 +248,7 @@ export class AddSettleUpComponent implements OnInit, OnDestroy {
     //compare amounts
     const oldAmount = this.settleUpConfig.expense.amount;
     const currency = expense.currency.code;
-    if (this.common.round(oldAmount) !== this.common.round(expense.amount)){
+    if (CommonService.round(oldAmount) !== CommonService.round(expense.amount)){
       comment.details.push(`Settlement amount changed from  ${currency} ${oldAmount} to ${currency}${expense.amount}.`)
     }
     //compare dates
