@@ -11,7 +11,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
 import { AddSettleUpComponent } from 'src/shared/components/add-settle-up/add-settle-up.component';
 import { Group } from 'src/shared/models/group.model';
-import { SettleUpConfig } from 'src/shared/models/settle-up-config.model';
+import { SettleUpConfig } from 'src/shared/models/request/settle-up-config.model';
 import { User } from 'src/shared/models/user.model';
 import { AuthService } from 'src/services/auth/auth.service';
 import { GroupBroadcastService } from 'src/services/broadcast/group-broadcast.service';

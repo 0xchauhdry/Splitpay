@@ -13,7 +13,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { Store } from '@ngrx/store';
 import { getFriends, getGroups } from 'src/store/selectors';
 import { AddSettleUpComponent } from 'src/shared/components/add-settle-up/add-settle-up.component';
-import { SettleUpConfig } from 'src/shared/models/settle-up-config.model';
+import { SettleUpConfig } from 'src/shared/models/request/settle-up-config.model';
 import { CardModule } from 'primeng/card';
 import { ExpenseListComponent } from '../../expense-list/expense-list.component';
 import { Expense } from 'src/shared/models/expense.model';

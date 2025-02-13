@@ -10,6 +10,7 @@ import { GroupBroadcastService } from 'src/services/broadcast/group-broadcast.se
 import { ExpenseService } from 'src/services/components/expense.service';
 import { LoaderService } from 'src/services/services/loader.service';
 import { ExpenseBroadcastService } from 'src/services/broadcast/expense-broadcast.service';
+import { GetExpenseRequest } from 'src/shared/models/request/get-expense.request.model';
 
 @Component({
   selector: 'app-group-expenese',
@@ -28,11 +29,10 @@ export class GroupExpeneseComponent implements OnInit, OnDestroy {
   expenses: Expense[] = [];
   totalRecords: number = 0;
   user: User;
-  pageSize: number = 10;
-  pageNumber: number = 1;
   subscription: Subscription;
   group: Group;
   ref: DynamicDialogRef | undefined;
+  getExpenseRequest: GetExpenseRequest = new GetExpenseRequest(1, 10);
 
   constructor(
     private expenseService: ExpenseService,
@@ -45,13 +45,15 @@ export class GroupExpeneseComponent implements OnInit, OnDestroy {
     this.subscription = new Subscription();
   }
   ngOnInit(): void {
+    this.groupBroadcastService.showFilters = true;
     this.getCurrentUser();
     this.getSelectedGroup();
     this.subscribeToUpdateExpense();
     this.subscribeToDeleteExpense();
+    this.subscribeToGroupFilters();
   }
 
-  getCurrentUser(){    
+  getCurrentUser(){
     this.subscription.add(
       this.authService.user$
       .subscribe((user: User) => {
@@ -65,11 +67,22 @@ export class GroupExpeneseComponent implements OnInit, OnDestroy {
       this.groupBroadcastService.selectedGroup
       .subscribe((group: Group) => {
         if (group){
-          this.expenses = [];
-          this.pageNumber = 1;
-          this.totalRecords = 0;
           this.group = { ...group };
-          this.getExpenses(this.group.id, this.pageNumber, this.pageSize, false);
+          this.resetValues();
+          this.getExpenses(this.group.id);
+        }
+      })
+    );
+  }
+
+  subscribeToGroupFilters(){
+    this.subscription.add(
+      this.groupBroadcastService.selectedFilters
+      .subscribe((getExpenseRequest: GetExpenseRequest) => {
+        if (getExpenseRequest){
+          this.getExpenseRequest = getExpenseRequest;
+          this.resetValues();
+          this.getExpenses(this.group.id);
         }
       })
     );
@@ -102,11 +115,11 @@ export class GroupExpeneseComponent implements OnInit, OnDestroy {
     );
   }
 
-  getExpenses(groupId: number, pageNumber: number, pageSize: number, involved: boolean) {
+  getExpenses(groupId: number) {
     this.loader.show();
     this.subscription.add(
       this.expenseService
-      .getGroupExpenses(groupId, pageNumber, pageSize, involved)
+      .getGroupExpenses(groupId, this.getExpenseRequest)
       .pipe(
         finalize(() => {
           this.loader.hide();
@@ -120,13 +133,20 @@ export class GroupExpeneseComponent implements OnInit, OnDestroy {
   }
 
   scroll(){
-    if (this.pageNumber * this.pageSize < this.totalRecords){
-      this.pageNumber++;
-      this.getExpenses(this.group.id, this.pageNumber, this.pageSize, false);
+    if (this.getExpenseRequest.pageNumber * this.getExpenseRequest.pageSize < this.totalRecords){
+      this.getExpenseRequest.pageNumber++;
+      this.getExpenses(this.group.id);
     }
+  }
+
+  resetValues(){
+    this.expenses = [];
+    this.totalRecords = 0;
+    this.getExpenseRequest.pageNumber = 1;
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.groupBroadcastService.showFilters = false;
   }
 }

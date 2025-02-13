@@ -1,6 +1,6 @@
-import { Currency } from "./currency.model";
-import { Expense } from "./expense.model";
-import { User } from "./user.model";
+import { Currency } from "../currency.model";
+import { Expense } from "../expense.model";
+import { User } from "../user.model";
 
 export class SettleUpConfig {
     payer: User;

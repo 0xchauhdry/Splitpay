@@ -102,7 +102,6 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
     private expenseBroadcastService: ExpenseBroadcastService,
     private notifier: NotifierService,
     private mixpanel: MixpanelService,
-    private common: CommonService,
     private store: Store
   ) {
     this.expense = config.data.expense;
@@ -122,7 +121,7 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
       desc: new FormControl('', Validators.required),
       amount: new FormControl(0, [
         Validators.required,
-        Validators.min(0.01), 
+        Validators.min(0.01),
         Validators.max(this.maxAmount)
       ]),
       date: new FormControl('', Validators.required),
@@ -166,13 +165,13 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
         this.group = this.groups.find(x => x.id === this.fromGroup);
       }
       else{ //opened from other places
-        this.group = this.groups[0];    
+        this.group = this.groups[0];
       }
       this.users = this.group.users;
       this.getCurrencies();
       group.setValue(this.group);
       this.currency = this.group.currency;
-    } 
+    }
     currency.setValue(this.currency.code);
     currency.disable();
 
@@ -214,7 +213,7 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
     else{
       const index = this.shares.controls.findIndex(x => x.value.id == this.currentUser.id);
       this.shares.controls[index].get('selectedPayer').setValue(true);
-  
+
       const selectedControl = this.shares.controls.find(x => x.value.selectedPayer)
       this.expenseForm.get('payer').setValue(selectedControl);
     }
@@ -243,15 +242,15 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
 
     if (this.expenseForm.get('splitType').value == 'Equally'){
       this.owedSum = 0;
-      const dividend = this.common.round(amount, this.shares.controls.length);
-      
-      // set all of the payer's amount 
+      const dividend = CommonService.round(amount, this.shares.controls.length);
+
+      // set all of the payer's amount
       this.setOwedAndPaidAmount(dividend, 0);
     }
     else{
       this.setOwedAndPaidAmount(null, 0);
       this.checkAmount('owed');
-    } 
+    }
 
     // find the selected and update paid amount
     if (selectedControl){
@@ -277,12 +276,12 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
   checkAmount(value: string) {
     const sharesAdded = this.shares.value.reduce(
       (acc: number, item: any) => {
-        return acc + this.common.round(item[value] || 0);
-      }, 0 
+        return acc + CommonService.round(item[value] || 0);
+      }, 0
     );
-    
+
     const amountValue = this.expenseForm.get('amount').value;
-    this[value + 'Sum'] = this.common.round(amountValue - sharesAdded);
+    this[value + 'Sum'] = CommonService.round(amountValue - sharesAdded);
   }
 
   getAllGroups(){
@@ -324,7 +323,7 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
   switchSplitType(event: SelectButtonChangeEvent){
     if (event.value == 'Equally'){
       const amount = this.expenseForm.get('amount').value;
-      const dividend = this.common.round(amount, this.shares.controls.length);
+      const dividend = CommonService.round(amount, this.shares.controls.length);
       this.setOwedAndPaidAmount(dividend);
       this.owedSum = 0;
     }
@@ -340,7 +339,7 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
       this.singlePayer = true;
       const index = this.shares.controls.findIndex(x => x.value.selectedPayer);
       const amount = this.expenseForm.get('amount').value;
-      this.setOwedAndPaidAmount(null,0); 
+      this.setOwedAndPaidAmount(null,0);
       this.shares.controls[index].get('paid').setValue(amount);
       this.paidSum = 0;
     }
@@ -422,7 +421,7 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
           expense.id = expenseId;
           if (this.fromGroup == expense.group.id){
             this.expenseBroadcastService.updateExpenseList = expense;
-          } 
+          }
           this.notifier.success('Expense added successfully.')
           this.mixpanel.log('Expense Added', { expenseId })
           this.dialogRef.close(true);
@@ -464,10 +463,10 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
       );
       if (oldShare) {
         const currency = oldExpense.currency;
-        const oldOwe = this.common.round(oldShare.owed);
-        const newOwe = this.common.round(share.owed);
-        const oldPay = this.common.round(oldShare.paid);
-        const newPay = this.common.round(share.paid);
+        const oldOwe = CommonService.round(oldShare.owed);
+        const newOwe = CommonService.round(share.owed);
+        const oldPay = CommonService.round(oldShare.paid);
+        const newPay = CommonService.round(share.paid);
 
         const createComment = (
           type: string,
@@ -516,7 +515,7 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
             this.currency = this.currencies[0];
             this.expenseForm.get('currency').setValue(this.currency);
           } else {
-            this.expenseForm.get('currency').disable();            
+            this.expenseForm.get('currency').disable();
             this.currency = group.currency;
             this.expenseForm.get('currency').setValue(this.currency.code);
           }
@@ -565,7 +564,7 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
 
     if (this.expenseForm.get('splitType').value == 'Equally'){
       const amount = this.expenseForm.get('amount').value;
-      const dividend = this.common.round(amount, this.shares.controls.length);
+      const dividend = CommonService.round(amount, this.shares.controls.length);
       this.setOwedAndPaidAmount(dividend);
     }
     else {
