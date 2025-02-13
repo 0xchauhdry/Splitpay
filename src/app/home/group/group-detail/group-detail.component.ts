@@ -24,6 +24,7 @@ import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
 import { CalendarModule } from 'primeng/calendar';
 import { GetExpenseRequest } from 'src/shared/models/request/get-expense.request.model';
 import { CommonService } from 'src/services/common/common.service';
+import { DateRange } from 'src/shared/models/common/date-range.model';
 
 @Component({
   selector: 'app-group-detail',
@@ -93,6 +94,7 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
             dateRange: new FormControl(''),
             involvedMe: new FormControl(false)
           })
+          this.currentFilters = new GetExpenseRequest(1, 10);
           this.getGroup(groupId);
          }
       })
@@ -107,6 +109,7 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
           dateRange: new FormControl(''),
           involvedMe: new FormControl(false)
         })
+        this.currentFilters = new GetExpenseRequest(1, 10);
       }
     })
   }
@@ -192,6 +195,14 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
         }
       })
     )
+  }
+
+  clearFlter(){
+    this.filterForm.patchValue({
+      dateRange: new FormControl('')
+    })
+    this.currentFilters.dateRange = new DateRange();
+    this.groupBroadcastService.selectedFilters = this.currentFilters;
   }
 
   ngOnDestroy(): void {

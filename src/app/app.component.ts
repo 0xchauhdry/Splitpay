@@ -36,7 +36,6 @@ import { NotifierService } from 'src/services/services/notifier.service';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'PSClient';
   subscription: Subscription;
   constructor(
      public loader: LoaderService,
