@@ -38,7 +38,6 @@
             <p-calendar
               formControlName="dateRange"
               selectionMode="range"
-              [showIcon]="true"
               [readonlyInput]="true"
               placeholder="Select Expense Date Range"
               styleClass="w-100"
@@ -47,6 +46,13 @@
               (onClose)="dateClose()"
             ></p-calendar>
           </div>
+          @if(currentFilters.dateRange.startDate || currentFilters.dateRange.endDate){
+            <i class="pi pi-times clear-filter"
+              pTooltip="Clear Filter"
+              [tooltipOptions]="tooltipOptions"
+              (click)="clearFlter()"
+            ></i>
+          }
         </form>
       }
     </div>

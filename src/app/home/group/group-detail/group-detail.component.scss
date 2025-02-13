@@ -14,3 +14,14 @@
 ::ng-deep .p-datepicker{
   transform: scale(0.75);
 }
+
+.clear-filter {
+  cursor: pointer;
+  color: red;
+  margin-left: -40px;
+}
+
+.clear-filter:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
