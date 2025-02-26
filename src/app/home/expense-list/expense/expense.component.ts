@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { Expense, UserShare } from 'src/shared/models/expense.model';
+import { Expense } from 'src/shared/models/expense/expense.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
 import { User } from 'src/shared/models/user.model';
@@ -19,6 +19,7 @@ import { SettleUpConfig } from 'src/shared/models/request/settle-up-config.model
 import { AddSettleUpComponent } from 'src/shared/components/add-settle-up/add-settle-up.component';
 import { ExpenseDetailComponent } from '../expense-detail/expense-detail.component';
 import { ExpenseBroadcastService } from 'src/services/broadcast/expense-broadcast.service';
+import { UserShare } from 'src/shared/models/expense/user-share.model';
 
 @Component({
   selector: 'app-expense',

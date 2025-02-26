@@ -16,7 +16,7 @@ import { AddSettleUpComponent } from 'src/shared/components/add-settle-up/add-se
 import { SettleUpConfig } from 'src/shared/models/request/settle-up-config.model';
 import { CardModule } from 'primeng/card';
 import { ExpenseListComponent } from '../../expense-list/expense-list.component';
-import { Expense } from 'src/shared/models/expense.model';
+import { Expense } from 'src/shared/models/expense/expense.model';
 import { LoaderService } from 'src/services/services/loader.service';
 import { ExpenseService } from 'src/services/components/expense.service';
 import { Friend } from 'src/shared/models/friend.model';

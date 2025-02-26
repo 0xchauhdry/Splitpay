@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Expense } from 'src/shared/models/expense.model';
+import { Expense } from 'src/shared/models/expense/expense.model';
 
 @Injectable()
 export class ExpenseBroadcastService {
@@ -23,7 +23,7 @@ export class ExpenseBroadcastService {
   set deleteExpense(newValue: number){
     this._deleteExpense.next(newValue);
   }
-  
+
   private _updateBalance: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   get updateBalance(): Observable<boolean> {

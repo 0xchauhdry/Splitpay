@@ -1,5 +1,5 @@
 import { Currency } from "../currency.model";
-import { Expense } from "../expense.model";
+import { Expense } from "../expense/expense.model";
 import { User } from "../user.model";
 
 export class SettleUpConfig {

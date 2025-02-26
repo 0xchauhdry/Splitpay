@@ -15,7 +15,7 @@ import { Subscription, finalize } from 'rxjs';
 import { AbsolutePipe } from 'src/shared/pipes/absolute.pipe';
 import { ButtonModule } from 'primeng/button';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { Expense, ExpenseComment, UserShare } from 'src/shared/models/expense.model';
+import { Expense } from 'src/shared/models/expense/expense.model';
 import { ExpenseService } from 'src/services/components/expense.service';
 import { User } from 'src/shared/models/user.model';
 import { AuthService } from 'src/services/auth/auth.service';
@@ -33,6 +33,8 @@ import { UserService } from 'src/services/components/user.service';
 import { CommonService } from 'src/services/common/common.service';
 import { Store } from '@ngrx/store';
 import { getGroups } from 'src/store/selectors';
+import { UserShare } from 'src/shared/models/expense/user-share.model';
+import { ExpenseComment } from 'src/shared/models/expense/expense-comment.model';
 
 @Component({
   selector: 'app-add-expense',

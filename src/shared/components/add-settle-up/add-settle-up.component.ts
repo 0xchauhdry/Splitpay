@@ -11,9 +11,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { RippleModule } from 'primeng/ripple';
 import { Subscription, finalize } from 'rxjs';
-import { Expense, ExpenseComment, UserShare } from 'src/shared/models/expense.model';
+import { Expense } from 'src/shared/models/expense/expense.model';
 import { SettleUpConfig } from 'src/shared/models/request/settle-up-config.model';
-import { SettleUp } from 'src/shared/models/settle-up.model';
+import { SettleUp } from 'src/shared/models/expense/settle-up.model';
 import { User } from 'src/shared/models/user.model';
 import { AuthService } from 'src/services/auth/auth.service';
 import { CommonService } from 'src/services/common/common.service';
@@ -23,6 +23,8 @@ import { NotifierService } from 'src/services/services/notifier.service';
 import { ExpenseBroadcastService } from 'src/services/broadcast/expense-broadcast.service';
 import { UserService } from 'src/services/components/user.service';
 import { Currency } from 'src/shared/models/currency.model';
+import { UserShare } from 'src/shared/models/expense/user-share.model';
+import { ExpenseComment } from 'src/shared/models/expense/expense-comment.model';
 
 @Component({
   selector: 'app-add-settle-up',

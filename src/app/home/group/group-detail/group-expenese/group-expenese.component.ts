@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subscription, finalize } from 'rxjs';
 import { ExpenseListComponent } from 'src/app/home/expense-list/expense-list.component';
-import { Expense } from 'src/shared/models/expense.model';
+import { Expense } from 'src/shared/models/expense/expense.model';
 import { Group } from 'src/shared/models/group.model';
 import { User } from 'src/shared/models/user.model';
 import { AuthService } from 'src/services/auth/auth.service';

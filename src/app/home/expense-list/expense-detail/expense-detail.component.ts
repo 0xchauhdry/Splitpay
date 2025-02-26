@@ -6,7 +6,7 @@ import {
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
 import { TooltipModule } from 'primeng/tooltip';
-import { Expense } from 'src/shared/models/expense.model';
+import { Expense } from 'src/shared/models/expense/expense.model';
 
 @Component({
   selector: 'app-expense-detail',
