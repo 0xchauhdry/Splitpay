@@ -55,7 +55,8 @@ import { getGroups } from 'src/store/selectors';
     CommonService,
     DialogService,
     ExpenseService,
-    UserService
+    UserService,
+    DatePipe
   ],
   templateUrl: './add-expense.component.html',
   styleUrls: ['./add-expense.component.scss'],
