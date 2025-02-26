@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import {
@@ -102,7 +102,8 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
     private expenseBroadcastService: ExpenseBroadcastService,
     private notifier: NotifierService,
     private mixpanel: MixpanelService,
-    private store: Store
+    private store: Store,
+    private datePipe: DatePipe
   ) {
     this.expense = config.data.expense;
     this.fromGroup = config.data.groupId;
@@ -242,13 +243,13 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
 
     if (this.expenseForm.get('splitType').value == 'Equally'){
       this.owedSum = 0;
-      const dividend = CommonService.round(amount, this.shares.controls.length);
-
-      // set all of the payer's amount
-      this.setOwedAndPaidAmount(dividend, 0);
+      const baseShare = CommonService.round(amount, this.shares.controls.length);
+      const sharesArray = this.getsharesArray(baseShare, amount, this.shares.controls.length);
+      this.setOwedAmount(sharesArray);
+      this.setPaidAmount(0);
     }
     else{
-      this.setOwedAndPaidAmount(null, 0);
+      this.setPaidAmount(0);
       this.checkAmount('owed');
     }
 
@@ -261,15 +262,27 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
     }
   }
 
-  setOwedAndPaidAmount(dividend: number, paid: number = null){
+  getsharesArray(baseShare: number, amount: number, numOfShares: number){
+    let totalRounded = baseShare * numOfShares;
+    let difference = CommonService.round(amount - totalRounded);
+
+    const sharesArray = new Array(numOfShares).fill(baseShare);
+    for (let i = 0; i < Math.abs(difference * 100); i++) {
+      sharesArray[i] += difference > 0 ? 0.01 : -0.01;
+    }
+    return sharesArray;
+  }
+
+  setOwedAmount(baseShares: number[]){
+    this.shares.controls.forEach((control, index) => {
+      control.get('owed').setValue(baseShares[index]);
+      control.get('owed').disable();
+    });
+  }
+
+  setPaidAmount(paid: number){
     this.shares.controls.forEach((control) => {
-      if (dividend !== null){
-        control.get('owed').setValue(dividend);
-        control.get('owed').disable();
-      }
-      if (paid != null){
-        control.get('paid').setValue(paid);
-      }
+      control.get('paid').setValue(paid);
     });
   }
 
@@ -323,8 +336,9 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
   switchSplitType(event: SelectButtonChangeEvent){
     if (event.value == 'Equally'){
       const amount = this.expenseForm.get('amount').value;
-      const dividend = CommonService.round(amount, this.shares.controls.length);
-      this.setOwedAndPaidAmount(dividend);
+      const baseShare = CommonService.round(amount, this.shares.controls.length);
+      const sharesArray = this.getsharesArray(baseShare, amount, this.shares.controls.length);
+      this.setOwedAmount(sharesArray);
       this.owedSum = 0;
     }
     else{
@@ -339,7 +353,7 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
       this.singlePayer = true;
       const index = this.shares.controls.findIndex(x => x.value.selectedPayer);
       const amount = this.expenseForm.get('amount').value;
-      this.setOwedAndPaidAmount(null,0);
+      this.setPaidAmount(0);
       this.shares.controls[index].get('paid').setValue(amount);
       this.paidSum = 0;
     }
@@ -491,7 +505,7 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
 
     //compare expense date
     if (oldExpense.date !== newExpense.date){
-      comment.details.push(`Expense date changed from ${oldExpense.date} to ${newExpense.date}`);
+      comment.details.push(`Expense date changed from ${this.tranformDate(oldExpense.date)} to ${this.tranformDate(newExpense.date)}`);
     }
 
     //compare expense title
@@ -501,6 +515,10 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
 
     //return null if there is no change
     return comment.details.length > 0 ? comment : null;
+  }
+
+  tranformDate(date: Date){
+    return this.datePipe.transform(date, 'dd/MM/yyyy hh:mm:ss a');
   }
 
   subscribeToGroupChange(){
@@ -564,8 +582,9 @@ export class AddExpenseComponent implements OnInit, OnDestroy {
 
     if (this.expenseForm.get('splitType').value == 'Equally'){
       const amount = this.expenseForm.get('amount').value;
-      const dividend = CommonService.round(amount, this.shares.controls.length);
-      this.setOwedAndPaidAmount(dividend);
+      const baseShare = CommonService.round(amount, this.shares.controls.length);
+      const sharesArray = this.getsharesArray(baseShare, amount, this.shares.controls.length);
+      this.setOwedAmount(sharesArray);
     }
     else {
       this.checkAmount('owed');
