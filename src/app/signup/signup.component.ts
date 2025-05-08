@@ -9,7 +9,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Subscription, debounceTime, distinctUntilChanged, finalize } from 'rxjs';
 import { User } from 'src/shared/models/user.model';
 import { ValidatorService } from 'src/services/common/validator.service';
@@ -30,7 +30,8 @@ import { AuthService } from 'src/services/auth/auth.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    GoogleSigninButtonModule
+    GoogleSigninButtonModule,
+    RouterModule
   ],
   providers:[
     ValidatorService,
@@ -83,7 +84,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.signUpForm.get('username').valueChanges
       .pipe(
-        debounceTime(300), 
+        debounceTime(300),
         distinctUntilChanged()
       )
       .subscribe({
@@ -101,7 +102,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.signUpForm.get('email').valueChanges
       .pipe(
-        debounceTime(300), 
+        debounceTime(300),
         distinctUntilChanged()
       )
       .subscribe({
