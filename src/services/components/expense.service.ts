@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../api/api.service';
-import { Expense } from 'src/shared/models/expense.model';
-import { SettleUp } from 'src/shared/models/settle-up.model';
+import { Expense } from 'src/shared/models/expense/expense.model';
+import { SettleUp } from 'src/shared/models/expense/settle-up.model';
 import { GetExpenseRequest } from 'src/shared/models/request/get-expense.request.model';
 
 @Injectable({

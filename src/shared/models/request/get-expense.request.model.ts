@@ -1,7 +1,6 @@
 import { DateRange } from "../common/date-range.model";
-import { Pagination } from "../common/pagination.model";
+import { FilterRequest } from "../common/filter-request.model";
 
-export class GetExpenseRequest extends Pagination{
+export class GetExpenseRequest extends FilterRequest{
   involved: boolean = false;
-  dateRange: DateRange = new DateRange();
 }
