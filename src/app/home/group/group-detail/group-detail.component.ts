@@ -77,7 +77,8 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
     this.getLoggedInUser();
     this.filterForm = new FormGroup({
       dateRange: new FormControl(''),
-      involvedMe: new FormControl(false)
+      involvedMe: new FormControl(false),
+      showDeleted: new FormControl(false),
     });
 
     this.subscribeToRoute();
@@ -92,7 +93,8 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
          if (groupId !== this.group?.id || 0){
           this.filterForm.patchValue({
             dateRange: new FormControl(''),
-            involvedMe: new FormControl(false)
+            involvedMe: new FormControl(false),
+            showDeleted: new FormControl(false),
           })
           this.currentFilters = new GetExpenseRequest(1, 10);
           this.getGroup(groupId);
@@ -107,7 +109,8 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
       if(!this.showFilters){
         this.filterForm.patchValue({
           dateRange: new FormControl(''),
-          involvedMe: new FormControl(false)
+          involvedMe: new FormControl(false),
+          showDeleted: new FormControl(false),
         })
         this.currentFilters = new GetExpenseRequest(1, 10);
       }
@@ -123,8 +126,13 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  checkboxChange(event: CheckboxChangeEvent){
-    this.currentFilters.involved = event.checked;
+  checkboxChange(event: CheckboxChangeEvent, control: string){
+    if(control == 'involvedMe'){
+      this.currentFilters.involved = event.checked;
+    } else {
+      this.currentFilters.deleted = event.checked;
+    }
+
     this.groupBroadcastService.selectedFilters = this.currentFilters;
   }
 

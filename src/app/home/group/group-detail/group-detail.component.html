@@ -30,11 +30,20 @@
               formControlName="involvedMe"
               [binary]="true"
               inputId="involvedMe"
-              (onChange)="checkboxChange($event)"
+              (onChange)="checkboxChange($event, 'involvedMe')"
             ></p-checkbox>
             <label for="involvedMe" class="mb-0">Only show expenses that involve me</label>
           </div>
-          <div class="flex-grow-1">
+          <div class="d-flex align-items-center gap-2">
+            <p-checkbox
+              formControlName="showDeleted"
+              [binary]="true"
+              inputId="showDeleted"
+              (onChange)="checkboxChange($event, 'showDeleted')"
+            ></p-checkbox>
+            <label for="showDeleted" class="mb-0">Show deleted</label>
+          </div><div class="flex-grow-1">
+            <label for="dateRange" style="position: relative;left: 30px;">Date: </label>
             <p-calendar
               formControlName="dateRange"
               selectionMode="range"
