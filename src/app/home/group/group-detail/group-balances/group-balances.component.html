@@ -18,6 +18,7 @@
                     Group Balances
                 </div>
             </h4>
+            <div class="scrollable">
             @if(users.length > 0){
               <ul class="list-group">
                 @for (user of users; track user) {
@@ -66,6 +67,7 @@
               } @else {
               <div class="p-3 text-center">No Record Found</div>
               }
+            </div>
         </div>
     </div>
 </div>
